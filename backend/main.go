@@ -1,17 +1,30 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"backend/models"
+	"backend/routers"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"log"
 )
 
 func main() {
-	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello, world!",
-		})
-	})
+	dsn := "host=db user=postgres password=postgres dbname=tenthousandhours port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Could not connect to the database: %v", err)
+	}
+
+	// Set the global DB variable
+	models.DB = db
+
+	// Migrate the schema
+	db.AutoMigrate(&models.User{})
+
+	// Setup router
+	router := routers.SetupRouter()
+
+	// Start the server
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("Could not start server: %v", err)
 	}
