@@ -23,7 +23,7 @@ func SetupRouter() *gin.Engine {
 	protected := router.Group("/protected")
 	protected.Use(middleware.AuthMiddleware())
 	{
-		//protected.GET("/dashboard", controllers.Dashboard)
+		// add protected routes that need user authentication here
 	}
 
 	return router
