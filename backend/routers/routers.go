@@ -4,10 +4,30 @@ import (
 	"backend/controllers"
 	"backend/middleware"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
+
+// CORS middleware function
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// Handle preflight requests
+		if c.Request.Method == http.MethodOptions {
+			c.AbortWithStatus(http.StatusNoContent)
+			return
+		}
+
+		c.Next()
+	}
+}
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
+
+	router.Use(CORSMiddleware())
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
