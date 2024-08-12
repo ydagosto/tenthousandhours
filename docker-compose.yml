@@ -12,6 +12,15 @@ services:
       - DB_NAME=tenthousandhours
     depends_on:
       - db
+    develop:
+      watch:
+        - action: sync
+          path: ./web
+          target: /src/web
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
 
   frontend:
     build: ./frontend
@@ -19,7 +28,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - REACT_APP_API_URL=http://localhost:8080
+      - REACT_APP_API_URL=http://backend:8080
+    volumes:
+      - ./frontend:/app  # Mount the frontend directory into the container
+    command: npm start  # Ensure the frontend is running in development mode
 
   db:
     image: postgres:latest
