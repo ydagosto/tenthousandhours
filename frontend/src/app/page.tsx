@@ -8,5 +8,6 @@ export default function Home() {
         <p>This is the homepage of your application.</p>
         <a href="/register">Register</a>
         <a href="/login">Login</a>
+        <a href="/dashboard">Register</a>
       </div>);
 }

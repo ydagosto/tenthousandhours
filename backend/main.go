@@ -19,7 +19,7 @@ func main() {
 	models.DB = db
 
 	// Migrate the schema
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.Activity{})
 
 	// Setup router
 	router := routers.SetupRouter()

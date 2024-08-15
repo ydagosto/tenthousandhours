@@ -1,5 +1,8 @@
 Todo
-- create activity
+- create activity:
+  - Create endpoint to create a new activity
+  - Create a component where you can add a new activity
+  
 - add practice hours
 - dashboard
 - logout functionality
