@@ -20,6 +20,15 @@ services:
       - "3000:3000"
     environment:
       - REACT_APP_API_URL=http://localhost:8080
+    develop:
+      watch:
+        - action: sync
+          path: ./web
+          target: /src/web
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
 
   db:
     image: postgres:latest

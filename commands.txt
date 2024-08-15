@@ -1,0 +1,7 @@
+docker-compose up --build
+# connect to postgresSQL container - docker exec -it db psql -U postgres -d tenthousandhours
+test credentials:
+- username: ydagosto2
+- password: password1
+- email: ydagosto2@gmail.com
+
