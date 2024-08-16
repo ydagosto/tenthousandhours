@@ -43,8 +43,8 @@ func SetupRouter() *gin.Engine {
 	protected := router.Group("/protected")
 	protected.Use(middleware.AuthMiddleware())
 	{
-		router.POST("/create-activity", controllers.CreateActivity)
-		router.POST("/get-activities", controllers.GetActivities)
+		protected.POST("/create-activity", controllers.CreateActivity)
+		protected.POST("/get-activities", controllers.GetActivities)
 	}
 
 	return router

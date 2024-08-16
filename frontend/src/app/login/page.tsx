@@ -30,6 +30,8 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
+                // store token
+                localStorage.setItem('token', data.token);
                 // Handle success, e.g., redirect to dashboard or home page
                 router.push('/dashboard'); // Change to your desired path
             } else {
