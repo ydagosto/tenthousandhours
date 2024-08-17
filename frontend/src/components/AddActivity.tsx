@@ -11,7 +11,7 @@ export default function AddActivity({ onActivityAdded }: AddActivityProps) {
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [unit, setUnit] = useState<string>('hours')
-    const [goal, setGoal] = useState<number>(0)
+    const [goal, setGoal] = useState<number>(10000)
     const [count, setCount] = useState<number>(0)
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -22,16 +22,15 @@ export default function AddActivity({ onActivityAdded }: AddActivityProps) {
         setLoading(true);
 
         try {
-            console.log(JSON.stringify({ name, description, unit, goal, count }))
-            await fetcher('/protected/create-activity', {
+            const response = await fetcher('/protected/create-activity', {
                 method: 'POST',
                 body: JSON.stringify({ name, description, unit, goal, count }),
             });
 
             // Refresh or handle state after adding an activity
-            onActivityAdded();
             setName('');
             setDescription('');
+            onActivityAdded();
         } catch (err) {
              // Check if err is an instance of Error
             if (err instanceof Error) {

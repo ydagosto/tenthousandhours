@@ -6,10 +6,20 @@ import AddActivity from '../../components/AddActivity'; // Adjust path as needed
 import { fetcher } from '../../utils/api'; // Adjust path as needed
 import ActivitySidebar from '@/components/ActivitySidebar';
 
+interface Activity {
+    ID: number;
+    name: string;
+    description: string;
+    unit: string;
+    goal: number;
+    count: number;
+}
+
+
 export default function Dashboard() {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
-    const [activities, setActivities] = useState<any[]>([]);
+    const [activities, setActivities] = useState<Activity[]>([]);
 
 
     const fetchActivities = async () => {
@@ -20,7 +30,6 @@ export default function Dashboard() {
             var data = await fetcher('/protected/get-activities', {
                 method: 'GET'
             });
-            console.table(data)
             setActivities(data)
 
         } catch (err) {
@@ -56,7 +65,7 @@ export default function Dashboard() {
                 <Typography variant="h6" gutterBottom>
                 </Typography>
             </Box>
-            <ActivitySidebar />
+            <ActivitySidebar activities={activities} />
         </Container>
     );
 }

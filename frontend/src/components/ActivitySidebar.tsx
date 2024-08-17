@@ -1,8 +1,7 @@
 // components/ActivitySidebar.tsx
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import ActivityCard from './ActivityCard';
-import { fetcher } from '../utils/api'; // Adjust path as needed
 
 interface Activity {
     ID: number;
@@ -13,32 +12,13 @@ interface Activity {
     count: number;
 }
 
-export default function ActivitySidebar() {
-    const [activities, setActivities] = useState<Activity[]>([]);
+interface ActivitySidebarProps {
+    activities: Activity[];
+}
+
+export default function ActivitySidebar({ activities }: ActivitySidebarProps) {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
-
-    useEffect(() => {
-        const fetchActivities = async () => {
-            setLoading(true);
-            try {
-                const data = await fetcher('/protected/get-activities', {
-                    method: 'GET'
-                });
-                setActivities(data);
-            } catch (err) {
-                if (err instanceof Error) {
-                    setError(err.message || 'Failed to fetch activities');
-                } else {
-                    setError('An unexpected error occurred');
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchActivities();
-    }, []);
 
     return (
         <Box sx={{ mt: 4 }}>

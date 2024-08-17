@@ -1,20 +1,21 @@
 package controllers
 
 import (
-    "net/http"
-    "github.com/gin-gonic/gin"
-    "backend/models"
+	"backend/models"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func CreateActivity(c *gin.Context) {
 	var activity models.Activity
-    if err := c.ShouldBindJSON(&activity); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-        return
-    }
-    
-    userID, exists := c.Get("userID")
-    if !exists {
+	if err := c.ShouldBindJSON(&activity); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	userID, exists := c.Get("userID")
+	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
 		return
 	}
@@ -28,19 +29,28 @@ func CreateActivity(c *gin.Context) {
 
 	activity.UserID = userID.(uint)
 	if err := models.DB.Create(&activity).Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-    c.JSON(http.StatusOK, activity)
+	c.JSON(http.StatusOK, activity)
 }
 
 func GetActivities(c *gin.Context) {
-    var activities []models.Activity
-    if err := models.DB.Find(&activities).Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
 
-    c.JSON(http.StatusOK, activities)
+	// Retrieve UserID from the context
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		return
+	}
+
+	// Retrieve all activities for the user
+	var activities []models.Activity
+	if err := models.DB.Where("user_id = ?", userID).Find(&activities).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, activities)
 }
