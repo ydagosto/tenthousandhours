@@ -25,20 +25,20 @@ export default function ActivityCard({
                 <Typography color="text.secondary">
                     {description}
                 </Typography>
-                <Typography variant="body2">
+                {/* <Typography variant="body2">
                     Unit: {unit}
                 </Typography>
                 <Typography variant="body2">
                     Goal: {goal}
-                </Typography>
+                </Typography> */}
                 <Typography variant="body2">
                     Count: {count}
                 </Typography>
             </CardContent>
-            <CardActions>
+            {/* <CardActions>
                 <Button size="small">Edit</Button>
                 <Button size="small" color="error">Delete</Button>
-            </CardActions>
+            </CardActions> */}
         </Card>
     );
 }
