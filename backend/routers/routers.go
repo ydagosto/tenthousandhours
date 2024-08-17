@@ -3,8 +3,9 @@ package routers
 import (
 	"backend/controllers"
 	"backend/middleware"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CORS middleware function
@@ -44,7 +45,7 @@ func SetupRouter() *gin.Engine {
 	protected.Use(middleware.AuthMiddleware())
 	{
 		protected.POST("/create-activity", controllers.CreateActivity)
-		protected.POST("/get-activities", controllers.GetActivities)
+		protected.GET("/get-activities", controllers.GetActivities)
 	}
 
 	return router
