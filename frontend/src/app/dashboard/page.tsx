@@ -5,16 +5,7 @@ import { Container, Typography, Box } from '@mui/material';
 import AddActivity from '../../components/AddActivity'; // Adjust path as needed
 import { fetcher } from '../../utils/api'; // Adjust path as needed
 import ActivitySidebar from '@/components/ActivitySidebar';
-
-interface Activity {
-    ID: number;
-    name: string;
-    description: string;
-    unit: string;
-    goal: number;
-    count: number;
-}
-
+import { Activity } from '@/types/activity';
 
 export default function Dashboard() {
     const [error, setError] = useState<string>('');
