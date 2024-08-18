@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import ActivitySidebar from '@/components/ActivitySidebar';
 import { Activity } from '@/types/activity';
+import AddPracticeButton from '@/components/AddPracticeButton';
 
 export default function Dashboard() {
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
@@ -19,6 +20,7 @@ export default function Dashboard() {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Dashboard
                 </Typography>
+                <AddPracticeButton />
                 {selectedActivity && (
                     <Box sx={{ mt: 4 }}>
                         <Typography variant="h6">Activity Details</Typography>

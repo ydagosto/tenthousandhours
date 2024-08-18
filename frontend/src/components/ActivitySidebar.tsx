@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ActivityCard from './ActivityCard';
 import AddActivity from './AddActivity';
 import { Activity } from '@/types/activity';
