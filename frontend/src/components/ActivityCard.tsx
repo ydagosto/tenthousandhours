@@ -7,6 +7,7 @@ interface ActivityCardProps {
     unit: string;
     goal: number;
     count: number;
+    onClick: () => void;
 }
 
 export default function ActivityCard({
@@ -15,9 +16,20 @@ export default function ActivityCard({
     unit,
     goal,
     count,
+    onClick
 }: ActivityCardProps) {
     return (
-        <Card sx={{ mb: 2 }}>
+        <Card onClick={onClick} 
+        
+        sx={{
+            mb: 2,
+            cursor: 'pointer', // Make cursor a pointer to indicate it's clickable
+            transition: 'transform 0.2s ease-in-out',
+            '&:hover': {
+                transform: 'scale(1.05)', // Slightly scale up on hover
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Add shadow on hover
+            },
+        }}>
             <CardContent>
                 <Typography variant="h6" component="div">
                     {name}

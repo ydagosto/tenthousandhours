@@ -5,8 +5,11 @@ import AddActivity from './AddActivity';
 import { Activity } from '@/types/activity';
 import { fetcher } from '@/utils/api';
 
+interface ActivitySidebarProps {
+    onActivitySelect: (activity: Activity) => void;
+}
 
-export default function ActivitySidebar() {
+export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarProps) {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -63,6 +66,7 @@ export default function ActivitySidebar() {
                             unit={activity.unit}
                             goal={activity.goal}
                             count={activity.count}
+                            onClick={() => onActivitySelect(activity)}
                         />
                     ))}
                 </Box>
