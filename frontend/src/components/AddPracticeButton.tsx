@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { IconButton, Button, Box, Modal, TextField, Tooltip, Typography } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
+import { Activity } from '@/types/activity';
+
+// Define the props interface
+interface AddPracticeButtonProps {
+    activity: Activity | null;
+}
 
 
-export default function AddPracticeButton() {
+export default function AddPracticeButton({activity}:AddPracticeButtonProps) {
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
     const [hours, setHours] = useState('');
@@ -13,7 +19,9 @@ export default function AddPracticeButton() {
 
     const handleSubmit = () => {
         // Submit the hours
-        console.log(`Date: ${date}, Hours: ${hours}`);
+        if (activity) {
+            console.log(`Date: ${date}, Hours: ${hours}, "ActivityId: ${activity.ID}"`);
+        }
         // Reset form
         setDate(new Date().toISOString().split('T')[0]);
         setHours('');

@@ -20,7 +20,7 @@ export default function Dashboard() {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Dashboard
                 </Typography>
-                <AddPracticeButton />
+                <AddPracticeButton activity={selectedActivity}/>
                 {selectedActivity && (
                     <Box sx={{ mt: 4 }}>
                         <Typography variant="h6">Activity Details</Typography>
