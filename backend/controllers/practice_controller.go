@@ -9,11 +9,6 @@ import (
 
 func LogPractice(c *gin.Context) {
 
-	// ActivityID uint      `gorm:"not null"`
-	// Count      float64   `json:"count" gorm:"not null"`
-	// Date       time.Time `json:"date" gorm:"type:date;not null"`
-	// UserID     uint      `gorm:"not null"`
-
 	var PracticeLog models.PracticeLog
 	if err := c.ShouldBindJSON(&PracticeLog); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
