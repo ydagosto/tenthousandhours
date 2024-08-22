@@ -1,7 +1,6 @@
 Todo
-- create activity:
-  - Create endpoint to create a new activity
-  - Create a component where you can add a new activity
+- get practice hours
+- update activities count atomically
   
 - add practice hours
 - dashboard
