@@ -3,9 +3,10 @@ package main
 import (
 	"backend/models"
 	"backend/routers"
+	"log"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 func main() {
@@ -19,7 +20,7 @@ func main() {
 	models.DB = db
 
 	// Migrate the schema
-	db.AutoMigrate(&models.User{}, &models.Activity{})
+	db.AutoMigrate(&models.User{}, &models.Activity{}, &models.PracticeLog{})
 
 	// Setup router
 	router := routers.SetupRouter()

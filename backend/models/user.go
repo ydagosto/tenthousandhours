@@ -10,5 +10,6 @@ type User struct {
 	Username     string `gorm:"uniqueIndex"`
 	Email        string `gorm:"uniqueIndex"`
 	PasswordHash string
-	Activities []Activity `json:"activities" gorm:"foreignKey:UserID"` // One-to-Many relationship
+	Activities   []Activity    `json:"activities" gorm:"foreignKey:UserID"` // One-to-Many relationship
+	PracticeLog  []PracticeLog `gorm:"foreignKey:UserID"`
 }
