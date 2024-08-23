@@ -47,6 +47,7 @@ func SetupRouter() *gin.Engine {
 		protected.POST("/create-activity", controllers.CreateActivity)
 		protected.GET("/get-activities", controllers.GetActivities)
 		protected.POST("/log-practice", controllers.LogPractice)
+		protected.GET("/get-practice", controllers.GetPractice)
 	}
 
 	return router
