@@ -1,9 +1,8 @@
 Todo
-- get practice hours
+- update practice hours once you submit the button
 - update activities count atomically
+- Design FE
   
-- add practice hours
-- dashboard
 - logout functionality
 - delete account
 - verify email
