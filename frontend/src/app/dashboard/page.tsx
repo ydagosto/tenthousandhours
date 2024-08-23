@@ -1,13 +1,58 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import ActivitySidebar from '@/components/ActivitySidebar';
 import { Activity } from '@/types/activity';
+import { PracticeLog } from '@/types/practiceLog';
 import AddPracticeButton from '@/components/AddPracticeButton';
+import { fetcher } from '@/utils/api';
 
 export default function Dashboard() {
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+    const [practiceLogs, setPracticeLogs] = useState<PracticeLog[] | null>([]);
+    
+    // Fetch activities on component mount
+    useEffect(() => {
+        const fetchActivities = async () => {
+            try {
+                // Replace with your API endpoint
+                var activitiesData = await fetcher('/protected/get-activities', {
+                    method: 'GET'
+                });
+
+                // Set the first activity as selected if available
+                if (activitiesData.length > 0) {
+                    setSelectedActivity(activitiesData[0]);
+                }
+            } catch (error) {
+                console.error('Failed to fetch activities:', error);
+            }
+        };
+
+        fetchActivities();
+    }, []);
+
+    // Fetch practice logs when selectedActivity changes
+    useEffect(() => {
+        const fetchPracticeLogs = async () => {
+            if (selectedActivity) {
+                try {
+                    // Replace with your API endpoint
+                    const practiceLogsData = await fetcher(`/protected/get-practice?activityID=${selectedActivity.ID}`, {
+                        method: 'GET'
+                    });
+
+                    console.log(practiceLogsData);
+                    setPracticeLogs(practiceLogsData);
+                } catch (error) {
+                    console.error('Failed to fetch practice logs:', error);
+                }
+            }
+        };
+
+        fetchPracticeLogs();
+    }, [selectedActivity]);
 
     const handleActivitySelect = (activity: Activity) => {
         setSelectedActivity(activity);
