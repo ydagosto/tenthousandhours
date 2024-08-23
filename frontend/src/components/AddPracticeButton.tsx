@@ -7,9 +7,10 @@ import { fetcher } from '@/utils/api';
 // Define the props interface
 interface AddPracticeButtonProps {
     activity: Activity | null;
+    onPracticeAdded: () => void; // Callback to refresh or handle state after adding an activity
 }
 
-export default function AddPracticeButton({ activity }: AddPracticeButtonProps) {
+export default function AddPracticeButton({ activity, onPracticeAdded }: AddPracticeButtonProps) {
     const [error, setError] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<string>(new Date().toISOString().split('.')[0] + 'Z');
@@ -42,6 +43,7 @@ export default function AddPracticeButton({ activity }: AddPracticeButtonProps) 
                 setDate(new Date().toISOString().split('.')[0] + 'Z');
                 setCount('');
                 handleClose();
+                onPracticeAdded();
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message || 'Failed to add activity count');

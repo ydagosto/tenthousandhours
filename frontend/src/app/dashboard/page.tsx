@@ -34,24 +34,24 @@ export default function Dashboard() {
         fetchActivities();
     }, []);
 
+    const fetchPracticeLogs = async () => {
+        if (selectedActivity) {
+            try {
+                // Replace with your API endpoint
+                const practiceLogsData = await fetcher(`/protected/get-practice?activityID=${selectedActivity.ID}`, {
+                    method: 'GET'
+                });
+
+                console.log(practiceLogsData);
+                setPracticeLogs(practiceLogsData);
+            } catch (error) {
+                console.error('Failed to fetch practice logs:', error);
+            }
+        }
+    };
+
     // Fetch practice logs when selectedActivity changes
     useEffect(() => {
-        const fetchPracticeLogs = async () => {
-            if (selectedActivity) {
-                try {
-                    // Replace with your API endpoint
-                    const practiceLogsData = await fetcher(`/protected/get-practice?activityID=${selectedActivity.ID}`, {
-                        method: 'GET'
-                    });
-
-                    console.log(practiceLogsData);
-                    setPracticeLogs(practiceLogsData);
-                } catch (error) {
-                    console.error('Failed to fetch practice logs:', error);
-                }
-            }
-        };
-
         fetchPracticeLogs();
     }, [selectedActivity]);
 
@@ -66,7 +66,9 @@ export default function Dashboard() {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Dashboard
                 </Typography>
-                <AddPracticeButton activity={selectedActivity}/>
+                <AddPracticeButton 
+                    activity={selectedActivity} 
+                    onPracticeAdded={fetchPracticeLogs}/>
                 {selectedActivity && (
                     <Box sx={{ mt: 4 }}>
                         <Typography variant="h6">Activity Details</Typography>
