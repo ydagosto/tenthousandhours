@@ -7,10 +7,11 @@ import { Activity } from '@/types/activity';
 import { PracticeLog } from '@/types/practiceLog';
 import AddPracticeButton from '@/components/AddPracticeButton';
 import { fetcher } from '@/utils/api';
+import BarChart from '@/components/BarChart';
 
 export default function Dashboard() {
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
-    const [practiceLogs, setPracticeLogs] = useState<PracticeLog[] | null>([]);
+    const [practiceLogs, setPracticeLogs] = useState<PracticeLog[]>([]);
 
     // Fetch activities on component mount
     useEffect(() => {
@@ -73,7 +74,14 @@ export default function Dashboard() {
                         <Typography>Description: {selectedActivity.description}</Typography>
                         <Typography>Goal: {selectedActivity.goal} {selectedActivity.unit}</Typography>
                         <Typography>Count: {selectedActivity.count} {selectedActivity.unit}</Typography>
-                        {/* Add more details as needed */}
+                        <Box sx={{ mt: 4 }}>
+                            <Typography variant="h6">Practice Logs</Typography>
+                            {practiceLogs.length > 0 ? (
+                                <BarChart practiceLogs={practiceLogs} />
+                            ) : (
+                                <Typography>No practice logs available.</Typography>
+                            )}
+                        </Box>
                     </Box>
                 )}
              </main>
