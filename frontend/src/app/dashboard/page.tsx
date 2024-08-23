@@ -11,7 +11,7 @@ import { fetcher } from '@/utils/api';
 export default function Dashboard() {
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
     const [practiceLogs, setPracticeLogs] = useState<PracticeLog[] | null>([]);
-    
+
     // Fetch activities on component mount
     useEffect(() => {
         const fetchActivities = async () => {
