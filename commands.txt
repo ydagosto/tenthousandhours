@@ -5,3 +5,15 @@ test credentials:
 - password: password1
 - email: ydagosto2@gmail.com
 
+Build and push in amd64:
+docker buildx build --platform linux/amd64 -t tenthousandhoursacr.azurecr.io/frontend --push ./frontend
+
+Apply deployment changes to kube cluster
+kubectl apply -f k8s/frontend-deployment.yaml
+
+Login in to kube cluster:
+az acr login --name tenthousandhoursacr
+
+
+Delete pods based on label:
+kubectl delete pod -l app=frontend
