@@ -15,7 +15,7 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
         }
         return '';
     };
-
+    
     const response = await fetch(`${API_URL}${url}`, {
         ...options,
         headers: {
