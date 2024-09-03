@@ -1,11 +1,34 @@
 import React from 'react';
 import { Chart } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, ChartData, ChartOptions } from 'chart.js';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    BarController, // Add BarController
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip,
+    Legend,
+    ChartData,
+    ChartOptions,
+} from 'chart.js';
 import { PracticeLog } from '@/types/practiceLog';
 import { Card, CardContent } from '@mui/material';
 
 // Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    BarController, // Ensure BarController is registered
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 const formatDataForChart = (logs: PracticeLog[]) => {
     const groupedLogs = logs.reduce((acc, log) => {
