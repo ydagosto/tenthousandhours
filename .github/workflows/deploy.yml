@@ -27,11 +27,11 @@ jobs:
 
     - name: Build and push frontend image
       run: |
-        docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_NAME }}/frontend:latest --push ./frontend
+        docker buildx build --platform linux/amd64 -t ${{ secrets.AZURE_CONTAINER_REGISTRY }}/frontend:latest --push ./frontend
 
     - name: Build and push backend image
       run: |
-        docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_NAME }}/backend:latest --push ./backend
+        docker buildx build --platform linux/amd64 -t ${{ secrets.AZURE_CONTAINER_REGISTRY }}/backend:latest --push ./backend
 
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
