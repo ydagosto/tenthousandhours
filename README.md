@@ -54,10 +54,10 @@ This project is a portfolio piece, showcasing full-stack development skills usin
 
 ### Data Flow
 
-	1.	User Interaction: Users interact with the frontend, logging in, managing activities, and logging practice sessions.
-	2.	API Requests: The frontend communicates with the Go-based backend via API requests to fetch, create, update, and delete data.
-	3.	Data Storage: Data is persisted in PostgreSQL, with activity and practice log data being stored and queried as needed.
-	4.	Data Visualization: The frontend retrieves the data and renders it in charts and tables, providing users with insights into their progress.
+  1. User Interaction: Users interact with the frontend, logging in, managing activities, and logging practice sessions.
+  2. API Requests: The frontend communicates with the Go-based backend via API requests to fetch, create, update, and delete data.
+  3. Data Storage: Data is persisted in PostgreSQL, with activity and practice log data being stored and queried as needed.
+  4. Data Visualization: The frontend retrieves the data and renders it in charts and tables, providing users with insights into their progress.
 
 ### Key Components
 

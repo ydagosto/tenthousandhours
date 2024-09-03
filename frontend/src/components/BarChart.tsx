@@ -40,7 +40,22 @@ const formatDataForChart = (logs: PracticeLog[]) => {
         return acc;
     }, {} as Record<string, number>);
 
-    const dates = Object.keys(groupedLogs).sort();
+    const firstDate = logs.length > 0 ? new Date(logs[0].date) : new Date();
+    const today = new Date();
+
+    // Generate all dates between firstDate and today
+    const dates: string[] = [];
+    for (let d = firstDate; d <= today; d.setDate(d.getDate() + 1)) {
+        dates.push(new Date(d).toISOString().split('T')[0]);
+    }
+
+    // Ensure all dates are present in groupedLogs, even if they have 0 hours
+    dates.forEach(date => {
+        if (!groupedLogs[date]) {
+            groupedLogs[date] = 0;
+        }
+    });
+
     const hours = dates.map(date => groupedLogs[date]);
 
     // Calculate cumulative sum

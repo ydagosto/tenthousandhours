@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+    <div className="flex-1 flex flex-col items-center justify-center p-4">
       <h1 className="text-gray-700 text-3xl md:text-4xl font-bold mb-4 text-center">
         Welcome to tenthousandhours
       </h1>
