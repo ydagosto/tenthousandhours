@@ -36,6 +36,11 @@ jobs:
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
       with:
+        version: 'v1.26.0'  # or whatever version you need
+
+    - name: Get AKS context
+      uses: azure/aks-set-context@v2
+      with:
         resource-group: ${{ secrets.RESOURCE_GROUP }}
         cluster-name: ${{ secrets.CLUSTER_NAME }}
 
