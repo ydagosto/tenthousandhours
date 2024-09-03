@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import ActivityCard from './ActivityCard';
 import AddActivity from './AddActivity';
 import { Activity } from '@/types/activity';
@@ -47,12 +47,11 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
     };
 
     return (
-        <Box className="flex">
-            <Box className="w-[20vw] h-screen bg-gray-200 flex flex-col">
-                <Box className="p-4 border-b border-gray-300">
+            <Card className="flex w-[20vw] h-screen flex flex-col m-4">
+                <Box className="p-4 border-b border-gray-300 m-1">
                     <AddActivity onActivityAdded={handleActivityAdded} />
                 </Box>
-                <Box className="flex-1 overflow-y-auto p-4">
+                <Box className="flex-1 overflow-y-auto p-4 m-1">
                     <Typography variant="h6" gutterBottom>
                         Your Activities
                     </Typography>
@@ -70,10 +69,6 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                         />
                     ))}
                 </Box>
-            </Box>
-            <Box className="flex-1 p-4">
-                {/* This is where the main content of your dashboard would go */}
-            </Box>
-        </Box>
+            </Card>
     );
 }
