@@ -16,8 +16,13 @@
     "@mui/x-date-pickers": "^7.13.0",
     "@mui/x-date-pickers-pro": "^7.13.0",
     "chart.js": "^4.4.4",
+    "date-fns": "^3.6.0",
+    "memoize-one": "^6.0.0",
     "next": "14.2.5",
+    "prop-types": "^15.8.1",
     "react": "^18",
+    "react-activity-calendar": "^2.5.1",
+    "react-calendar-heatmap": "^1.9.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18"
   },

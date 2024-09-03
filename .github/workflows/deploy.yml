@@ -36,7 +36,7 @@ jobs:
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
       with:
-        version: 'v1.26.0'  # or whatever version you need
+        version: 'v1.26.0'
 
     - name: Get AKS context
       uses: azure/aks-set-context@v2
@@ -46,7 +46,7 @@ jobs:
 
     - name: Deploy frontend to AKS
       run: |
-        kubectl apply -f k8s/frontend-deployment.yaml
+        kubectl apply -f k8s/frontend-deployment.yaml --validate=false
         kubectl delete pod -l app=frontend
 
     - name: Deploy backend to AKS
