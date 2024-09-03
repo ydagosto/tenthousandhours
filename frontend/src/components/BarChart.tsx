@@ -5,8 +5,9 @@ import {
     CategoryScale,
     LinearScale,
     BarElement,
-    BarController, // Add BarController
+    BarController,
     LineElement,
+    LineController,
     PointElement,
     Title,
     Tooltip,
@@ -22,8 +23,9 @@ ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
-    BarController, // Ensure BarController is registered
+    BarController,
     LineElement,
+    LineController,
     PointElement,
     Title,
     Tooltip,
