@@ -17,6 +17,3 @@ az acr login --name tenthousandhoursacr
 
 Delete pods based on label:
 kubectl delete pod -l app=frontend
-
-#github token:
-git remote set-url origin https://ydagosto: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@github.com/ydagosto/tenthousandhours.git
