@@ -71,7 +71,8 @@ export default function Dashboard() {
                             onPracticeAdded={fetchPracticeLogs}/>
                         {selectedActivity && (
                             <Box sx={{ mt: 4 }}>
-                                <Typography variant="h6">{selectedActivity.name} - {selectedActivity.description}</Typography>
+                                <Typography variant="h4" align='center'>{selectedActivity.name}</Typography>
+                                <Typography variant="h6" align='center'>{selectedActivity.description}</Typography>
                                 <Box>
                                     {practiceLogs.length > 0 ? (
                                         <>

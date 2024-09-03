@@ -16,7 +16,7 @@ import {
     ChartOptions,
 } from 'chart.js';
 import { PracticeLog } from '@/types/practiceLog';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 
 // Register Chart.js components
 ChartJS.register(
@@ -101,9 +101,9 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
         ],
     };
 
-    // Define the options with mixed chart types
     const options: ChartOptions<'bar' | 'line'> = {
         responsive: true,
+        maintainAspectRatio: false,  // Allow chart to take full height
         plugins: {
             legend: {
                 position: 'top',
@@ -122,6 +122,9 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
                     display: true,
                     text: 'Date',
                 },
+                grid: {
+                    display: false,  // Remove gridlines on x-axis
+                },
             },
             y: {
                 title: {
@@ -130,6 +133,9 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
                 },
                 beginAtZero: true,
                 position: 'left',
+                grid: {
+                    display: false,  // Remove gridlines on y-axis
+                },
             },
             y1: {
                 title: {
@@ -139,21 +145,25 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
                 beginAtZero: true,
                 position: 'right',
                 grid: {
-                    drawOnChartArea: false,
+                    drawOnChartArea: false,  // Ensure no gridlines overlap with the y-axis
                 },
             },
         },
     };
-
+    
     return (
         <div className="flex justify-center p-4">
             <Card className="shadow-lg w-full max-w-4xl">
-                <CardContent>
+                <Typography className="p-4" variant='h6' align="center">
+                    Practice Hours and Cumulative Progress
+                </Typography>
+                <CardContent style={{ height: '100%', padding: 10 }}>
                     <div className="w-full">
                         <Chart<'bar' | 'line'>
                             type='bar'
                             data={chartData}
                             options={options}
+                            style={{ height: '100%', width: '100%' }}
                         />
                     </div>
                 </CardContent>
