@@ -1,0 +1,46 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Azure Container Registry
+      run: |
+        echo "${{ secrets.AZURE_CREDENTIALS }}" | az login --service-principal --username ${{ secrets.AZURE_CREDENTIALS.CLIENT_ID }} --password ${{ secrets.AZURE_CREDENTIALS.CLIENT_SECRET }} --tenant ${{ secrets.AZURE_CREDENTIALS.TENANT_ID }}
+        az acr login --name ${{ secrets.ACR_NAME }}
+
+    - name: Build and push frontend image
+      run: |
+        docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_NAME }}/frontend:latest --push ./frontend
+
+    - name: Build and push backend image
+      run: |
+        docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_NAME }}/backend:latest --push ./backend
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        resource-group: ${{ secrets.RESOURCE_GROUP }}
+        name: ${{ secrets.CLUSTER_NAME }}
+
+    - name: Deploy frontend to AKS
+      run: |
+        kubectl apply -f k8s/frontend-deployment.yaml
+        kubectl delete pod -l app=frontend
+
+    - name: Deploy backend to AKS
+      run: |
+        kubectl apply -f k8s/backend-deployment.yaml
+        kubectl delete pod -l app=backend
