@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ActivityCalendar from 'react-activity-calendar';
-import { Tooltip as MuiTooltip } from '@mui/material';
+import { Tooltip as MuiTooltip, Card, CardContent, Typography } from '@mui/material';
 
 interface ContributionChartProps {
     practiceLogs: {
@@ -29,7 +29,6 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
         } else {
             setUpdatedLogs(practiceLogs);
         }
-        console.log(updatedLogs);
     }, [practiceLogs]);
 
     const values = updatedLogs.map(log => ({
@@ -39,31 +38,39 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
     }));
 
     return (
-        <div className="w-full overflow-x-auto">
-            <ActivityCalendar
-                data={values}
-                renderBlock={(block, activity) => (
-                    <MuiTooltip title={`${activity.count} activities on ${activity.date}`}>
-                    {block}
-                    </MuiTooltip>
-                )}
-                blockSize={14} // Size of each block
-                blockMargin={5} // Margin between blocks
-                fontSize={12} // Font size for labels
-                showWeekdayLabels={true} // Show labels for weekdays
-                labels={{
-                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    weekdays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-                    totalCount: '{{count}} contributions in {{year}}',
-                    legend: {
-                        less: 'Less',
-                        more: 'More',
-                    },
-                }}
-                theme={{
-                    light: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'], // Correct way to define colors
-                }}
-            />
+        <div className="flex justify-center p-4">
+            <Card className="shadow-lg">
+                <CardContent>
+                    <div className="flex justify-center">
+                        <div className="w-full overflow-x-auto">
+                            <ActivityCalendar
+                                data={values}
+                                renderBlock={(block, activity) => (
+                                    <MuiTooltip title={`${activity.count} hours on ${activity.date}`}>
+                                        {block}
+                                    </MuiTooltip>
+                                )}
+                                blockSize={14} // Size of each block
+                                blockMargin={5} // Margin between blocks
+                                fontSize={12} // Font size for labels
+                                showWeekdayLabels={true} // Show labels for weekdays
+                                labels={{
+                                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                                    weekdays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+                                    totalCount: '{{count}} hours in {{year}}',
+                                    legend: {
+                                        less: 'Less',
+                                        more: 'More',
+                                    },
+                                }}
+                                theme={{
+                                    light: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'], // Correct way to define colors
+                                }}
+                            />
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }
