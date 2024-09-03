@@ -8,6 +8,7 @@ import { PracticeLog } from '@/types/practiceLog';
 import AddPracticeButton from '@/components/AddPracticeButton';
 import { fetcher } from '@/utils/api';
 import BarChart from '@/components/BarChart';
+import ContributionChart from '@/components/ContributionChart';
 
 export default function Dashboard() {
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
@@ -74,12 +75,13 @@ export default function Dashboard() {
                         <Typography variant="h6">Activity Details</Typography>
                         <Typography>Name: {selectedActivity.name}</Typography>
                         <Typography>Description: {selectedActivity.description}</Typography>
-                        <Typography>Goal: {selectedActivity.goal} {selectedActivity.unit}</Typography>
-                        <Typography>Count: {selectedActivity.count} {selectedActivity.unit}</Typography>
                         <Box sx={{ mt: 4 }}>
                             <Typography variant="h6">Practice Logs</Typography>
                             {practiceLogs.length > 0 ? (
-                                <BarChart practiceLogs={practiceLogs} />
+                                <>
+                                    <ContributionChart practiceLogs={practiceLogs} />
+                                    <BarChart practiceLogs={practiceLogs} />
+                                </>
                             ) : (
                                 <Typography>No practice logs available.</Typography>
                             )}
