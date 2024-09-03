@@ -1,4 +1,4 @@
-# TenThousandHours
+# tenthousandhours
 
 ## Overview
 
