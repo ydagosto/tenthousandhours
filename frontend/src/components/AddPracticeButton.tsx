@@ -65,7 +65,7 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                 <IconButton
                     sx={{
                         position: 'fixed',
-                        top: 16,
+                        top: 70,
                         right: 16,
                         backgroundColor: 'primary.main',
                         color: 'white',
