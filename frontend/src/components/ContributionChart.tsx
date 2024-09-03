@@ -38,11 +38,11 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
     }));
 
     return (
-        <div className="flex justify-center p-4">
-            <Card className="shadow-lg">
+        <div className="w-full flex justify-center p-4">
+            <Card className="w-full shadow-lg">
                 <CardContent>
-                    <div className="flex justify-center">
-                        <div className="w-full overflow-x-auto">
+                    <div className="w-full flex justify-center">
+                        <div className="w-full justify-center overflow-x-auto">
                             <ActivityCalendar
                                 data={values}
                                 renderBlock={(block, activity) => (
@@ -50,8 +50,8 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
                                         {block}
                                     </MuiTooltip>
                                 )}
-                                blockSize={14} // Size of each block
-                                blockMargin={5} // Margin between blocks
+                                blockSize={11} // Size of each block
+                                blockMargin={3} // Margin between blocks
                                 fontSize={12} // Font size for labels
                                 showWeekdayLabels={true} // Show labels for weekdays
                                 labels={{

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box,  Typography } from '@mui/material';
 import ActivitySidebar from '@/components/ActivitySidebar';
 import { Activity } from '@/types/activity';
 import { PracticeLog } from '@/types/practiceLog';
@@ -19,7 +19,7 @@ export default function Dashboard() {
         const fetchActivities = async () => {
             try {
                 // Replace with your API endpoint
-                var activitiesData = await fetcher('/protected/get-activities', {
+                const activitiesData = await fetcher('/protected/get-activities', {
                     method: 'GET'
                 });
 
@@ -61,34 +61,32 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="flex">
-            <ActivitySidebar  onActivitySelect={handleActivitySelect}/>
-            <main className="flex-1 p-6">
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Dashboard
-                </Typography>
-                <AddPracticeButton 
-                    activity={selectedActivity} 
-                    onPracticeAdded={fetchPracticeLogs}/>
-                {selectedActivity && (
-                    <Box sx={{ mt: 4 }}>
-                        <Typography variant="h6">Activity Details</Typography>
-                        <Typography>Name: {selectedActivity.name}</Typography>
-                        <Typography>Description: {selectedActivity.description}</Typography>
-                        <Box sx={{ mt: 4 }}>
-                            <Typography variant="h6">Practice Logs</Typography>
-                            {practiceLogs.length > 0 ? (
-                                <>
-                                    <ContributionChart practiceLogs={practiceLogs} />
-                                    <BarChart practiceLogs={practiceLogs} />
-                                </>
-                            ) : (
-                                <Typography>No practice logs available.</Typography>
-                            )}
-                        </Box>
-                    </Box>
-                )}
-             </main>
+        <div className="flex justify-center">
+            <div className="w-full max-w-7xl px-4 overflow-hidden">
+                <div className="flex overflow-hidden">
+                    <ActivitySidebar onActivitySelect={handleActivitySelect} />
+                    <main className="flex-1 p-6 overflow-hidden">
+                        <AddPracticeButton 
+                            activity={selectedActivity} 
+                            onPracticeAdded={fetchPracticeLogs}/>
+                        {selectedActivity && (
+                            <Box sx={{ mt: 4 }}>
+                                <Typography variant="h6">{selectedActivity.name} - {selectedActivity.description}</Typography>
+                                <Box>
+                                    {practiceLogs.length > 0 ? (
+                                        <>
+                                            <ContributionChart practiceLogs={practiceLogs} />
+                                            <BarChart practiceLogs={practiceLogs} />
+                                        </>
+                                    ) : (
+                                        <Typography>No practice logs available.</Typography>
+                                    )}
+                                </Box>
+                            </Box>
+                        )}
+                    </main>
+                </div>
+            </div>
         </div>
     );
 }
