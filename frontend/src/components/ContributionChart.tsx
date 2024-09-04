@@ -10,7 +10,7 @@ interface ContributionChartProps {
 }
 
 export default function ContributionChart({ practiceLogs }: ContributionChartProps) {
-    const [updatedLogs, setUpdatedLogs] = useState(practiceLogs);
+    const [updatedLogs, setUpdatedLogs] = useState<{ date: string, count: number }[]>([]);
     const [totalHours, setTotalHours] = useState(0);
     const [maxStreak, setMaxStreak] = useState(0);
     const [activeDays, setActiveDays] = useState(0);
@@ -18,32 +18,45 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
     useEffect(() => {
         const today = new Date();
         const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-        const oneYearAgoDateStr = oneYearAgo.toISOString().split('T')[0];
+        const oneYearAgoDateStr = oneYearAgo.toISOString().split('T')[0]; // Convert one year ago to YYYY-MM-DD format
 
-        // Check if the date from one year ago exists
-        const dateExists = practiceLogs.some(log => log.date === oneYearAgoDateStr);
+        // 1. Group logs by date and sum the counts
+        const logsByDate = practiceLogs.reduce((acc, log) => {
+            const date = log.date.split('T')[0]; // Normalize date to YYYY-MM-DD
+            if (!acc[date]) {
+                acc[date] = 0;
+            }
+            acc[date] += log.count; // Sum the counts for the same day
+            return acc;
+        }, {} as Record<string, number>);
 
-        // If it doesn't exist, add it with count = 0
-        if (!dateExists) {
-            setUpdatedLogs([
-                { date: oneYearAgoDateStr, count: 0 },
-                ...practiceLogs,
-            ]);
-        } else {
-            setUpdatedLogs(practiceLogs);
+        // 2. Check if there is an entry for one year ago, if not, add a log with count = 0
+        if (!logsByDate[oneYearAgoDateStr]) {
+            logsByDate[oneYearAgoDateStr] = 0;
         }
 
-        // Calculate total hours of practice in the last year
-        const total = practiceLogs.reduce((sum, log) => sum + log.count, 0);
+        // 3. Transform logsByDate back into an array of objects
+        let summedLogs = Object.keys(logsByDate).map(date => ({
+            date,
+            count: logsByDate[date],
+        }));
+
+        // 4. Sort the logs by date
+        summedLogs = summedLogs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+        setUpdatedLogs(summedLogs);
+
+        // 4. Calculate total hours of practice in the last year
+        const total = summedLogs.reduce((sum, log) => sum + log.count, 0);
         setTotalHours(total);
 
-        // Calculate max streak and total active days
+        // 5. Calculate max streak and total active days
         let streak = 0;
         let maxStreak = 0;
         let activeDays = 0;
-        let lastDate = new Date(oneYearAgoDateStr);
+        let lastDate = oneYearAgo;
 
-        practiceLogs.forEach(log => {
+        summedLogs.forEach(log => {
             const logDate = new Date(log.date);
             if (log.count > 0) {
                 activeDays++;
@@ -62,7 +75,7 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
     }, [practiceLogs]);
 
     const values = updatedLogs.map(log => ({
-        date: log.date.split('T')[0], // Ensure the date format is YYYY-MM-DD
+        date: log.date, // Ensure the date format is YYYY-MM-DD
         count: log.count,
         level: Math.min(log.count, 4), // Adjust level to control color intensity
     }));
@@ -95,17 +108,18 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
                                 )}
                                 blockSize={15} // Size of each block
                                 blockMargin={4} // Margin between blocks
-                                blockRadius={8} // Rounded corners for blocks
+                                blockRadius={2} // Rounded corners for blocks
                                 fontSize={13} // Font size for labels
-                                showWeekdayLabels={false} // Show labels for weekdays
-                                hideColorLegend={true}
-                                hideTotalCount={true}
+                                showWeekdayLabels={false} // Hide weekday labels
+                                hideColorLegend={true} // Hide color legend
+                                hideTotalCount={true} // Hide total count
                                 labels={{
                                     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                                     weekdays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
                                 }}
                                 theme={{
-                                    light: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'], // Correct way to define colors
+                                    light: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'], // Correct theme colors for light mode
+                                    dark: ['#1e1e1e', '#2e2e2e', '#216e39', '#30a14e', '#40c463'], // Adjusted dark mode theme to 5 colors
                                 }}
                             />
                         </div>
