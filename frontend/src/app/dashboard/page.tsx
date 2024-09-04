@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Box,  Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ActivitySidebar from '@/components/ActivitySidebar';
 import { Activity } from '@/types/activity';
 import { PracticeLog } from '@/types/practiceLog';
@@ -14,16 +14,18 @@ export default function Dashboard() {
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
     const [practiceLogs, setPracticeLogs] = useState<PracticeLog[]>([]);
 
+    // Get the theme and media query for responsive layout
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     // Fetch activities on component mount
     useEffect(() => {
         const fetchActivities = async () => {
             try {
-                // Replace with your API endpoint
                 const activitiesData = await fetcher('/protected/get-activities', {
                     method: 'GET'
                 });
 
-                // Set the first activity as selected if available
                 if (activitiesData.length > 0) {
                     setSelectedActivity(activitiesData[0]);
                 }
@@ -38,12 +40,10 @@ export default function Dashboard() {
     const fetchPracticeLogs = async () => {
         if (selectedActivity) {
             try {
-                // Replace with your API endpoint
                 const practiceLogsData = await fetcher(`/protected/get-practice?activityID=${selectedActivity.ID}`, {
                     method: 'GET'
                 });
 
-                console.log(practiceLogsData);
                 setPracticeLogs(practiceLogsData);
             } catch (error) {
                 console.error('Failed to fetch practice logs:', error);
@@ -63,12 +63,16 @@ export default function Dashboard() {
     return (
         <div className="flex justify-center">
             <div className="w-full max-w-7xl px-4 overflow-hidden">
-                <div className="flex overflow-hidden">
+                <div
+                    className={isMobile ? "flex flex-col" : "flex overflow-hidden"}
+                    style={{ flexDirection: isMobile ? 'column' : 'row' }}
+                >
                     <ActivitySidebar onActivitySelect={handleActivitySelect} />
                     <main className="flex-1 p-6 overflow-hidden">
                         <AddPracticeButton 
                             activity={selectedActivity} 
-                            onPracticeAdded={fetchPracticeLogs}/>
+                            onPracticeAdded={fetchPracticeLogs}
+                        />
                         {selectedActivity && (
                             <Box sx={{ mt: 4 }}>
                                 <Typography variant="h4" align='center'>{selectedActivity.name}</Typography>
