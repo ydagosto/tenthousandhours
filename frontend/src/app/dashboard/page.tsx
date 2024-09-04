@@ -62,13 +62,16 @@ export default function Dashboard() {
 
     return (
         <div className="flex justify-center">
-            <div className="w-full max-w-7xl px-4 overflow-hidden">
+            <div
+                className="w-full max-w-7xl overflow-hidden"
+                style={{ padding: isMobile ? '0' : '0 16px' }} // Conditionally apply padding
+            >
                 <div
                     className={isMobile ? "flex flex-col" : "flex overflow-hidden"}
                     style={{ flexDirection: isMobile ? 'column' : 'row' }}
                 >
                     <ActivitySidebar onActivitySelect={handleActivitySelect} />
-                    <main className="flex-1 p-6 overflow-hidden">
+                    <main className="flex-1 p-2 overflow-hidden">
                         <AddPracticeButton 
                             activity={selectedActivity} 
                             onPracticeAdded={fetchPracticeLogs}

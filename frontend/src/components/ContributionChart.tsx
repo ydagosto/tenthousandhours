@@ -68,7 +68,7 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
     }));
 
     return (
-        <div className="w-full flex justify-center p-4">
+        <div className="w-full flex justify-center p-2">
             <Card className="w-full shadow-lg">
                 <CardContent>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
