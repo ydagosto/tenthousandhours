@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ActivityCard from './ActivityCard';
 import AddActivity from './AddActivity';
 import { Activity } from '@/types/activity';
@@ -14,6 +14,7 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
     const [loading, setLoading] = useState<boolean>(false);
     const [activities, setActivities] = useState<Activity[]>([]);
 
+    // Fetch activities
     const fetchActivities = async () => {
         setError('');
         setLoading(true);
@@ -38,26 +39,58 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
 
     // Fetch activities when component mounts
     useEffect(() => {
-        fetchActivities();
-    }, []); // Empty dependency array ensures it runs only once after initial render
+        fetchActivities(); 
+    }, []); 
 
     // Callback for when an activity is added
     const handleActivityAdded = () => {
-        fetchActivities(); // Refresh activities list
+        fetchActivities(); 
     };
 
+    // Responsive layout
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect if screen size is mobile
+
     return (
-            <Card className="flex w-[20vw] h-screen flex flex-col m-4">
-                <Box className="p-4 border-b border-gray-300 m-1">
-                    <AddActivity onActivityAdded={handleActivityAdded} />
-                </Box>
-                <Box className="flex-1 overflow-y-auto p-4 m-1">
-                    <Typography variant="h6" gutterBottom>
-                        Your Activities
-                    </Typography>
-                    {loading && <Typography>Loading...</Typography>}
-                    {error && <Typography color="error">{error}</Typography>}
-                    {activities.map((activity) => (
+        <Card
+            className="m-4"
+            sx={{
+                display: 'flex',
+                flexDirection: isMobile ? 'row' : 'column',
+                width: isMobile ? '100%' : '20vw', // Full width on mobile, fixed width on desktop
+                height: isMobile ? 'auto' : '100vh', // Auto height on mobile, full screen height on desktop
+                overflowX: isMobile ? 'auto' : 'hidden', // Enable horizontal scroll on mobile
+                overflowY: isMobile ? 'hidden' : 'auto', // Enable vertical scroll on desktop
+            }}
+        >
+            <Box
+                sx={{
+                    p: 2,
+                    borderBottom: isMobile ? 'none' : '1px solid gray',
+                    flexBasis: isMobile ? 'auto' : 'auto',
+                    whiteSpace: isMobile ? 'nowrap' : 'normal',
+                    overflowX: 'auto',
+                }}
+            >
+                <AddActivity onActivityAdded={handleActivityAdded} />
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: isMobile ? 'row' : 'column',
+                    flexWrap: isMobile ? 'nowrap' : 'wrap',
+                    overflowX: isMobile ? 'auto' : 'hidden',
+                    p: 2,
+                    width: '100%',
+                }}
+            >
+                <Typography variant="h6" gutterBottom>
+                    Your Activities
+                </Typography>
+                {loading && <Typography>Loading...</Typography>}
+                {error && <Typography color="error">{error}</Typography>}
+                {activities.map((activity) => (
+                    <Box key={activity.ID} sx={{ display: isMobile ? 'inline-block' : 'block', mr: isMobile ? 2 : 0 }}>
                         <ActivityCard
                             key={activity.ID}
                             name={activity.name}
@@ -67,8 +100,9 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                             count={activity.count}
                             onClick={() => onActivitySelect(activity)}
                         />
-                    ))}
-                </Box>
-            </Card>
+                    </Box>
+                ))}
+            </Box>
+        </Card>
     );
 }
