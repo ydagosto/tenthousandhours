@@ -44,10 +44,17 @@ export default function ActivityCard({
             }}
         >
             <CardContent>
-                <Typography variant="h6" component="div">
+                <Typography 
+                    variant="h6" 
+                    component="div" 
+                    className="truncate"
+                >
                     {name}
                 </Typography>
-                <Typography color="text.secondary">
+                <Typography 
+                    color="text.secondary" 
+                    className="truncate text-gray-500"
+                >
                     {description}
                 </Typography>
                 <Typography variant="body2">

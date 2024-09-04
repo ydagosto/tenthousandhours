@@ -106,7 +106,7 @@ export default function ActivitySidebar({ onActivitySelect, selectedActivity }: 
                         key={activity.ID}
                         sx={{
                             display: isMobile ? 'inline-block' : 'block',
-                            minWidth: isMobile ? '225px' : 'auto',
+                            width: isMobile ? '225px' : 'auto',
                             mr: isMobile ? 2 : 0,
                         }}
                     >
