@@ -70,7 +70,7 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                 height: isMobile ? 'auto' : '100vh',
                 overflowX: isMobile ? 'auto' : 'hidden',
                 overflowY: isMobile ? 'hidden' : 'auto',
-                padding: 2,
+                padding: isMobile ? 1 : 2,
             }}
         >
             <Box
@@ -90,7 +90,7 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                         key={activity.ID}
                         sx={{
                             display: isMobile ? 'inline-block' : 'block',
-                            minWidth: isMobile ? '150px' : 'auto',
+                            minWidth: isMobile ? '225px' : 'auto',
                             mr: isMobile ? 2 : 0,
                         }}
                     >
