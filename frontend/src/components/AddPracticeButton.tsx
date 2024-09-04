@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton, Button, Box, Modal, TextField, Tooltip, Typography } from '@mui/material';
+import { IconButton, Button, Box, Modal, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import { Activity } from '@/types/activity';
 import { fetcher } from '@/utils/api';
@@ -16,6 +16,9 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
     const [date, setDate] = useState<string>(new Date().toISOString().split('.')[0] + 'Z');
     const [count, setCount] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screen
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -65,7 +68,8 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                 <IconButton
                     sx={{
                         position: 'fixed',
-                        top: 70,
+                        top: isMobile ? 'auto' : 70, // Adjust position for mobile
+                        bottom: isMobile ? 16 : 'auto', // Position it at the bottom on mobile
                         right: 16,
                         backgroundColor: 'primary.main',
                         color: 'white',

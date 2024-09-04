@@ -152,9 +152,9 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
     };
     
     return (
-        <div className="flex justify-center p-4">
+        <div className="flex justify-center p-2">
             <Card className="shadow-lg w-full max-w-4xl">
-                <Typography className="p-4" variant='h6' align="center">
+                <Typography className="p-2" variant='h6' align="center">
                     Practice Hours and Cumulative Progress
                 </Typography>
                 <CardContent style={{ height: '100%', padding: 10 }}>
