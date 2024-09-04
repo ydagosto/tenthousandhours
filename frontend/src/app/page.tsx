@@ -1,7 +1,27 @@
 "use client";
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { fetcher } from '@/utils/api';
 
 export default function Home() {
+  
+  const [dashboardPage, setDashboardPage] = useState('/login');
+
+  // Validate whether the user is logged in or not
+  useEffect(() => {
+    const validateToken = async () => {
+        try {
+            await fetcher('/validate-token', {
+                method: 'GET'
+            });
+            setDashboardPage('/dashboard');
+        } catch (error) {
+          setDashboardPage('/login');
+        }
+    };
+
+    validateToken();
+  }, []);
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-4">
       <h1 className="text-gray-700 text-3xl md:text-4xl font-bold mb-4 text-center">
@@ -17,7 +37,7 @@ export default function Home() {
         <a href="/login" className="text-gray-700 underline">
           Login
         </a>
-        <a href="/dashboard" className="text-gray-700 underline">
+        <a href={dashboardPage} className="text-gray-700 underline">
           Dashboard
         </a>
       </div>

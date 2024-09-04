@@ -44,8 +44,8 @@ func SetupRouter() *gin.Engine {
 	})
 
 	router.POST("/register", controllers.Register)
-
 	router.POST("/login", controllers.Login)
+	router.GET("/validate-token", middleware.AuthMiddleware(), controllers.ValidateToken)
 
 	// Protected routes
 	protected := router.Group("/protected")
