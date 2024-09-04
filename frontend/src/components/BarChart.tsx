@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme, useMediaQuery, Card, CardContent, Typography } from '@mui/material';
 import { Chart } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -16,7 +17,6 @@ import {
     ChartOptions,
 } from 'chart.js';
 import { PracticeLog } from '@/types/practiceLog';
-import { Card, CardContent, Typography } from '@mui/material';
 
 // Register Chart.js components
 ChartJS.register(
@@ -150,15 +150,25 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
             },
         },
     };
-    
+
+    // Use the MUI theme to detect mobile view
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if screen is mobile
+
     return (
         <div className="flex justify-center p-2">
             <Card className="shadow-lg w-full max-w-4xl">
                 <Typography className="p-2" variant='h6' align="center">
                     Practice Hours and Cumulative Progress
                 </Typography>
-                <CardContent style={{ height: '100%', padding: 10 }}>
-                    <div className="w-full">
+                <CardContent style={{ padding: 10 }}>
+                    <div
+                        className="w-full"
+                        style={{
+                            height: isMobile ? '300px' : '400px', // Set height based on screen size
+                            width: '100%',
+                        }}
+                    >
                         <Chart<'bar' | 'line'>
                             type='bar'
                             data={chartData}

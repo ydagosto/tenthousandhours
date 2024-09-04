@@ -5,12 +5,14 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'; // Icon
 import AddActivity from './AddActivity';
 import { Activity } from '@/types/activity';
 import { fetcher } from '@/utils/api';
+import { HorizontalRule } from '@mui/icons-material';
 
 interface ActivitySidebarProps {
     onActivitySelect: (activity: Activity) => void;
+    selectedActivity: Activity | null;
 }
 
-export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarProps) {
+export default function ActivitySidebar({ onActivitySelect, selectedActivity }: ActivitySidebarProps) {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -22,7 +24,7 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
         setLoading(true);
 
         try {
-            var data = await fetcher('/protected/get-activities', {
+            const data = await fetcher('/protected/get-activities', {
                 method: 'GET',
             });
             setActivities(data);
@@ -73,12 +75,26 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                 padding: isMobile ? 1 : 2,
             }}
         >
+            {!isMobile ? (
+                <>
+                    <Typography align='center' variant='h5'>Activities</Typography>
+                    <hr
+                        style={{
+                            width: '100%',     // Full width
+                            border: 'none',     // Remove default border
+                            borderTop: '1px solid lightgray',  // Light gray border on top
+                            margin: '16px 0',  // Add some vertical spacing
+                        }}
+                    />
+                </>
+                ) : (
+                <></>
+            )}
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: isMobile ? 'row' : 'column',
-                    overflowX: isMobile ? 'auto' : 'hidden',
-                    overflowY: isMobile ? 'hidden' : 'auto',
+                    overflow: "visible",
                     whiteSpace: isMobile ? 'nowrap' : 'normal',
                 }}
             >
@@ -102,6 +118,7 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                             goal={activity.goal}
                             count={activity.count}
                             onClick={() => onActivitySelect(activity)}
+                            isSelected={selectedActivity?.ID === activity.ID} // Determine if this card is selected
                         />
                     </Box>
                 ))}
