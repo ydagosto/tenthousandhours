@@ -1,18 +1,14 @@
-// components/AddActivity.tsx
 import { useState } from 'react';
 import { Button, TextField, Box, Typography, Alert } from '@mui/material';
-import { fetcher } from '../utils/api'; // Adjust path as needed
+import { fetcher } from '../utils/api'; 
 
 interface AddActivityProps {
-    onActivityAdded: () => void; // Callback to refresh or handle state after adding an activity
+    onActivityAdded: () => void; 
 }
 
 export default function AddActivity({ onActivityAdded }: AddActivityProps) {
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [unit, setUnit] = useState<string>('hours')
-    const [goal, setGoal] = useState<number>(10000)
-    const [count, setCount] = useState<number>(0)
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -22,17 +18,14 @@ export default function AddActivity({ onActivityAdded }: AddActivityProps) {
         setLoading(true);
 
         try {
-            const response = await fetcher('/protected/create-activity', {
+            await fetcher('/protected/create-activity', {
                 method: 'POST',
-                body: JSON.stringify({ name, description, unit, goal, count }),
+                body: JSON.stringify({ name, description }),
             });
-
-            // Refresh or handle state after adding an activity
             setName('');
             setDescription('');
-            onActivityAdded();
+            onActivityAdded(); // Trigger callback after adding
         } catch (err) {
-             // Check if err is an instance of Error
             if (err instanceof Error) {
                 setError(err.message || 'Failed to add activity');
             } else {
@@ -43,9 +36,8 @@ export default function AddActivity({ onActivityAdded }: AddActivityProps) {
         }
     };
 
-
     return (
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ mt: 2 }}>
             <Typography variant="h6" gutterBottom>
                 Add New Activity
             </Typography>
