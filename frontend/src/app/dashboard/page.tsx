@@ -7,16 +7,35 @@ import { Activity } from '@/types/activity';
 import { PracticeLog } from '@/types/practiceLog';
 import AddPracticeButton from '@/components/AddPracticeButton';
 import { fetcher } from '@/utils/api';
+import { useRouter } from 'next/navigation';
 import BarChart from '@/components/BarChart';
 import ContributionChart from '@/components/ContributionChart';
 
 export default function Dashboard() {
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
     const [practiceLogs, setPracticeLogs] = useState<PracticeLog[]>([]);
+    const router = useRouter();
 
     // Get the theme and media query for responsive layout
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    // Validate the token when the component mounts
+    useEffect(() => {
+        const validateToken = async () => {
+            try {
+                // Try to validate the token
+                await fetcher('/validate-token', {
+                    method: 'GET',
+                });
+            } catch (error) {
+                // If validation fails, redirect to login
+                router.push('/login');
+            }
+        };
+
+        validateToken();
+    }, [router]);
 
     // Fetch activities on component mount
     useEffect(() => {

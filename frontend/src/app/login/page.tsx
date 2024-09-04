@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { TextField, Button, Typography, Container, Box, Alert } from '@mui/material';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+import { TextField, Button, Typography, Container, Box, Alert, Link } from '@mui/material';
+import { API_URL } from '@/utils/api';
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
@@ -81,6 +80,14 @@ export default function LoginPage() {
                         {loading ? 'Logging in...' : 'Login'}
                     </Button>
                 </form>
+                <Box sx={{ mt: 4 }}>
+                    <Typography variant="body1">
+                        New here?{' '}
+                        <Link href="/register" underline="hover" color="primary">
+                            Create an account
+                        </Link>
+                    </Typography>
+                </Box>
             </Box>
         </Container>
     );
