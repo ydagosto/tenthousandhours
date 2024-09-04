@@ -90,7 +90,8 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                         key={activity.ID}
                         sx={{
                             display: isMobile ? 'inline-block' : 'block',
-                            minWidth: isMobile ? '150px' : 'auto',
+                            minWidth: isMobile ? '200px' : 'auto', // Increased width for mobile
+                            maxWidth: isMobile ? '250px' : 'auto', // Restrict max width for mobile
                             mr: isMobile ? 2 : 0,
                         }}
                     >
@@ -110,12 +111,14 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                 <Box
                     sx={{
                         display: 'inline-block',
-                        minWidth: '150px',
+                        minWidth: isMobile ? '200px' : 'auto', // Same width as other cards on mobile
+                        maxWidth: isMobile ? '250px' : 'auto', // Same max width as other cards on mobile
                         cursor: 'pointer',
                         textAlign: 'center',
                         border: '2px dashed gray',
                         borderRadius: 1,
                         padding: 2,
+                        mr: isMobile ? 2 : 0,
                     }}
                     onClick={handleClick} // Open popover on click
                 >
