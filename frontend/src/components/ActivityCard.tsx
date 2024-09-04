@@ -8,6 +8,7 @@ interface ActivityCardProps {
     goal: number;
     count: number;
     onClick: () => void;
+    isSelected: boolean; // New prop to track if this card is selected
 }
 
 export default function ActivityCard({
@@ -16,7 +17,8 @@ export default function ActivityCard({
     unit,
     goal,
     count,
-    onClick
+    onClick,
+    isSelected,
 }: ActivityCardProps) {
     const [isPressed, setIsPressed] = useState(false);
 
@@ -32,9 +34,9 @@ export default function ActivityCard({
                 mb: 2,
                 cursor: 'pointer',
                 transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
-                transform: isPressed ? 'scale(0.95)' : 'scale(1)', // Slightly shrink the card on press
-                boxShadow: isPressed ? '0 2px 6px rgba(0, 0, 0, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.1)', // Change box shadow on press
-                backgroundColor: isPressed ? '#f0f0f0' : 'white', // Change background color on press
+                transform: isPressed || isSelected ? 'scale(0.95)' : 'scale(1)', // Shrink when pressed or selected
+                boxShadow: isPressed || isSelected ? '0 2px 6px rgba(0, 0, 0, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.1)', // Change box shadow on press or when selected
+                backgroundColor: isPressed || isSelected ? '#f0f0f0' : 'white', // Change background color when pressed or selected
                 '&:hover': {
                     transform: 'scale(1.05)', // Slightly scale up on hover
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Add shadow on hover
