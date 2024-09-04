@@ -32,6 +32,14 @@ export default function Navbar() {
         handleMenuClose();
     };
 
+    // Handle logout
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        handleMenuClose();
+        router.push('/login');
+    };
+
     const menuProps = {
         paper: {
         elevation: 0,
@@ -62,8 +70,7 @@ export default function Navbar() {
     }
 
     // Validate if the user is logged in based on token
-    useEffect(() => {
-      const validateToken = async () => {
+    const validateToken = async () => {
         try {
           await fetcher('/validate-token', {
             method: 'GET',
@@ -73,8 +80,16 @@ export default function Navbar() {
           setIsLoggedIn(false);
         }
       };
-  
-      validateToken();
+
+    useEffect(() => {
+        // Initial token validation on mount
+        validateToken();
+        
+        window.addEventListener('storage', validateToken);
+
+        return () => {
+            window.removeEventListener('storage', validateToken);
+        };
     }, []);
     
     return (
@@ -106,7 +121,7 @@ export default function Navbar() {
                                 </ListItemIcon>
                                 Settings
                             </MenuItem>
-                            <MenuItem>
+                            <MenuItem onClick={handleLogout}>
                                 <ListItemIcon>
                                     <Logout fontSize="small" />
                                 </ListItemIcon>
