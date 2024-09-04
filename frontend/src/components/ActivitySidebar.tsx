@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Box, Card, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Card, Typography, useMediaQuery, useTheme, IconButton, Popover } from '@mui/material';
 import ActivityCard from './ActivityCard';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'; // Icon for "+" card
 import AddActivity from './AddActivity';
 import { Activity } from '@/types/activity';
 import { fetcher } from '@/utils/api';
@@ -13,6 +14,7 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // Anchor for Popover
 
     // Fetch activities
     const fetchActivities = async () => {
@@ -21,14 +23,12 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
 
         try {
             var data = await fetcher('/protected/get-activities', {
-                method: 'GET'
+                method: 'GET',
             });
-            setActivities(data)
-
+            setActivities(data);
         } catch (err) {
-             // Check if err is an instance of Error
             if (err instanceof Error) {
-                setError(err.message || 'Failed to add activity');
+                setError(err.message || 'Failed to fetch activities');
             } else {
                 setError('An unexpected error occurred');
             }
@@ -39,58 +39,61 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
 
     // Fetch activities when component mounts
     useEffect(() => {
-        fetchActivities(); 
-    }, []); 
+        fetchActivities();
+    }, []);
 
-    // Callback for when an activity is added
+    // Handle when an activity is added
     const handleActivityAdded = () => {
-        fetchActivities(); 
+        fetchActivities(); // Refresh activities list
+        setAnchorEl(null); // Close the popover after adding activity
     };
 
-    // Responsive layout
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect if screen size is mobile
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screen
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget); // Set the "+" button as the anchor for the popover
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null); // Close the popover
+    };
+
+    const open = Boolean(anchorEl); // Whether the popover is open
 
     return (
         <Card
-            className="m-4"
             sx={{
                 display: 'flex',
                 flexDirection: isMobile ? 'row' : 'column',
-                width: isMobile ? '100%' : '20vw', // Full width on mobile, fixed width on desktop
-                height: isMobile ? 'auto' : '100vh', // Auto height on mobile, full screen height on desktop
-                overflowX: isMobile ? 'auto' : 'hidden', // Enable horizontal scroll on mobile
-                overflowY: isMobile ? 'hidden' : 'auto', // Enable vertical scroll on desktop
+                width: isMobile ? '100%' : '20vw',
+                height: isMobile ? 'auto' : '100vh',
+                overflowX: isMobile ? 'auto' : 'hidden',
+                overflowY: isMobile ? 'hidden' : 'auto',
+                padding: 2,
             }}
         >
             <Box
                 sx={{
-                    p: 2,
-                    borderBottom: isMobile ? 'none' : '1px solid gray',
-                    flexBasis: isMobile ? 'auto' : 'auto',
-                    whiteSpace: isMobile ? 'nowrap' : 'normal',
-                    overflowX: 'auto',
-                }}
-            >
-                <AddActivity onActivityAdded={handleActivityAdded} />
-            </Box>
-            <Box
-                sx={{
                     display: 'flex',
                     flexDirection: isMobile ? 'row' : 'column',
-                    flexWrap: isMobile ? 'nowrap' : 'wrap',
                     overflowX: isMobile ? 'auto' : 'hidden',
-                    p: 2,
-                    width: '100%',
+                    overflowY: isMobile ? 'hidden' : 'auto',
+                    whiteSpace: isMobile ? 'nowrap' : 'normal',
                 }}
             >
-                <Typography variant="h6" gutterBottom>
-                    Your Activities
-                </Typography>
+                {/* Activities List */}
                 {loading && <Typography>Loading...</Typography>}
                 {error && <Typography color="error">{error}</Typography>}
                 {activities.map((activity) => (
-                    <Box key={activity.ID} sx={{ display: isMobile ? 'inline-block' : 'block', mr: isMobile ? 2 : 0 }}>
+                    <Box
+                        key={activity.ID}
+                        sx={{
+                            display: isMobile ? 'inline-block' : 'block',
+                            minWidth: isMobile ? '150px' : 'auto',
+                            mr: isMobile ? 2 : 0,
+                        }}
+                    >
                         <ActivityCard
                             key={activity.ID}
                             name={activity.name}
@@ -102,6 +105,47 @@ export default function ActivitySidebar({ onActivitySelect }: ActivitySidebarPro
                         />
                     </Box>
                 ))}
+
+                {/* "+" Card */}
+                <Box
+                    sx={{
+                        display: 'inline-block',
+                        minWidth: '150px',
+                        cursor: 'pointer',
+                        textAlign: 'center',
+                        border: '2px dashed gray',
+                        borderRadius: 1,
+                        padding: 2,
+                    }}
+                    onClick={handleClick} // Open popover on click
+                >
+                    <IconButton>
+                        <AddCircleOutlineIcon fontSize="large" />
+                    </IconButton>
+                    <Typography variant="body2">Add New Activity</Typography>
+                </Box>
+
+                {/* Popover for Adding Activity */}
+                <Popover
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    PaperProps={{
+                        style: { maxHeight: '300px', maxWidth: '300px', overflow: 'auto' }, // Control size of popover
+                    }}
+                >
+                    <Box sx={{ p: 2, width: '300px' }}>
+                        <AddActivity onActivityAdded={handleActivityAdded} />
+                    </Box>
+                </Popover>
             </Box>
         </Card>
     );
