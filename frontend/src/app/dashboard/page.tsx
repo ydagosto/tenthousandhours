@@ -85,7 +85,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="flex justify-center">
+        <div className="flex-1 flex justify-center">
             <div
                 className="w-full max-w-7xl overflow-hidden"
                 style={{ padding: isMobile ? '0' : '0 16px' }}

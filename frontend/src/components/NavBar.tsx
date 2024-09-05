@@ -73,7 +73,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="bg-gray-800 p-2">
+        <nav className="bg-gray-800 p-2 sticky top-0">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Left side - Home link */}
                 <div className="text-white text-lg font-semibold">
