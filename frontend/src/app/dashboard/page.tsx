@@ -16,37 +16,50 @@ export default function Dashboard() {
     const { isLoggedIn, validateToken } = useAuth();
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
     const [practiceLogs, setPracticeLogs] = useState<PracticeLog[]>([]);
+    const [hasCheckedLoginStatus, setHasCheckedLoginStatus] = useState(false);
     const router = useRouter();
 
     // Get the theme and media query for responsive layout
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    // Redirect to login if not logged in
+    // Validate token and handle login redirection
     useEffect(() => {
-        if (!isLoggedIn) {
-            router.push('/login');
-        }
+        const checkLoginStatus = async () => {
+            await validateToken(); // Validate the token
+            setHasCheckedLoginStatus(true); // Only check login status after validation is done
+        };
+
+        checkLoginStatus();
     }, []);
+
+    // Redirect to login if not logged in after the login check
+    useEffect(() => {
+        if (hasCheckedLoginStatus && !isLoggedIn) {
+            router.push('/login'); // Redirect to login if not logged in
+        }
+    }, [isLoggedIn, hasCheckedLoginStatus, router]);
 
     // Fetch activities on component mount
     useEffect(() => {
-        const fetchActivities = async () => {
-            try {
-                const activitiesData = await fetcher('/protected/get-activities', {
-                    method: 'GET'
-                });
+        if (!hasCheckedLoginStatus && isLoggedIn) {
+            const fetchActivities = async () => {
+                try {
+                    const activitiesData = await fetcher('/protected/get-activities', {
+                        method: 'GET'
+                    });
 
-                if (activitiesData.length > 0) {
-                    setSelectedActivity(activitiesData[0]);
+                    if (activitiesData.length > 0) {
+                        setSelectedActivity(activitiesData[0]);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch activities:', error);
                 }
-            } catch (error) {
-                console.error('Failed to fetch activities:', error);
-            }
-        };
-
-        fetchActivities();
-    }, []);
+            };
+        
+            fetchActivities();
+        }
+    }, [isLoggedIn, hasCheckedLoginStatus]);
 
     const fetchPracticeLogs = async () => {
         if (selectedActivity) {

@@ -62,27 +62,29 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
     return (
         <>
             <Tooltip  
-                title={<Typography sx={{ fontSize: '1rem' }}>Add practice hours</Typography>}
+                title={activity ? <Typography sx={{ fontSize: '1rem' }}>Add practice hours for {activity.name}</Typography> : <Typography sx={{ fontSize: '1rem' }}>Select or add an activity to log practice</Typography>}
                 placement="left"  
-                arrow>
-                <IconButton
-                    sx={{
-                        position: 'fixed',
-                        top: isMobile ? 'auto' : 70, // Adjust position for mobile
-                        bottom: isMobile ? 16 : 'auto', // Position it at the bottom on mobile
-                        right: 16,
-                        backgroundColor: 'primary.main',
-                        color: 'white',
-                        '&:hover': {
-                            backgroundColor: 'primary.dark',
-                        },
-                        width: 60,
-                        height: 60,
-                    }}
-                    onClick={handleOpen}
-                >
-                    <AddIcon />
-                </IconButton>
+                arrow
+            >
+                    <IconButton
+                        sx={{
+                            position: 'fixed',
+                            top: isMobile ? 'auto' : 70, // Adjust position for mobile
+                            bottom: isMobile ? 16 : 'auto', // Position it at the bottom on mobile
+                            right: 16,
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: 'primary.dark',
+                            },
+                            width: 60,
+                            height: 60,
+                        }}
+                        onClick={handleOpen}
+                        disabled={!activity} // Disable the button if activity is null
+                    >
+                        <AddIcon />
+                    </IconButton>
             </Tooltip>
             <Modal open={open} onClose={handleClose}>
                 <Box
