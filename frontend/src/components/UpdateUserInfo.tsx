@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Alert, TextField, Button, Box, Typography, Divider } from '@mui/material';
 import { fetcher } from '@/utils/api';
+import { useAuth } from '@/context/AuthContext';
 
 export default function UpdateUserInfo() {
+  const { validateToken } = useAuth();
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [error, setError] = useState('');
@@ -57,7 +59,7 @@ export default function UpdateUserInfo() {
                 method: 'POST',
                 body: JSON.stringify({ username, email }),
             });
-
+            validateToken()
             setSuccess("Profile updated successfully");
             
         } catch (err) {

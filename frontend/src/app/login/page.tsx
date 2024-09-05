@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Typography, Container, Box, Alert, Link } from '@mui/material';
 import { API_URL } from '@/utils/api';
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
+    const { setIsLoggedIn } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -31,8 +33,8 @@ export default function LoginPage() {
             if (response.ok) {
                 // store token
                 localStorage.setItem('token', data.token);
-                // Dispatch a storage event to notify other components (like Navbar)
-                window.dispatchEvent(new Event('storage'));
+                // Set AuthContext state to true
+                setIsLoggedIn(true);
                 // Handle success, e.g., redirect to dashboard or home page
                 router.push('/dashboard'); // Change to your desired path
             } else {

@@ -10,8 +10,10 @@ import { fetcher } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import BarChart from '@/components/BarChart';
 import ContributionChart from '@/components/ContributionChart';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Dashboard() {
+    const { isLoggedIn, validateToken } = useAuth();
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
     const [practiceLogs, setPracticeLogs] = useState<PracticeLog[]>([]);
     const router = useRouter();
@@ -20,22 +22,12 @@ export default function Dashboard() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    // Validate the token when the component mounts
+    // Redirect to login if not logged in
     useEffect(() => {
-        const validateToken = async () => {
-            try {
-                // Try to validate the token
-                await fetcher('/validate-token', {
-                    method: 'GET',
-                });
-            } catch (error) {
-                // If validation fails, redirect to login
-                router.push('/login');
-            }
-        };
-
-        validateToken();
-    }, [router]);
+        if (!isLoggedIn) {
+            router.push('/login');
+        }
+    }, []);
 
     // Fetch activities on component mount
     useEffect(() => {

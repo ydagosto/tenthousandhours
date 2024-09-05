@@ -11,12 +11,13 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { fetcher } from '@/utils/api';
 import { useRouter } from 'next/navigation'; 
 import { User } from '@/types/user';
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userInfo, setUserInfo] = useState< User | null>(null)
+    const { isLoggedIn, username, setIsLoggedIn } = useAuth();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const router = useRouter();
+    
 
     const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -32,14 +33,6 @@ export default function Navbar() {
     const handleMenuItemClick = (path: string) => {
         router.push(path);
         handleMenuClose();
-    };
-
-    // Handle logout
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        setIsLoggedIn(false);
-        handleMenuClose();
-        router.push('/login');
     };
 
     const menuProps = {
@@ -71,30 +64,14 @@ export default function Navbar() {
         },
     }
 
-    // Validate if the user is logged in based on token
-    const validateToken = async () => {
-        try {
-            const data: User = await fetcher('/validate-token', {
-                method: 'GET',
-            });
-            setIsLoggedIn(true);
-            setUserInfo(data);
-        } catch {
-             setIsLoggedIn(false);
-        }
-      };
+    // Handle logout
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        handleMenuClose();
+        router.push('/login');
+    };
 
-    useEffect(() => {
-        // Initial token validation on mount
-        validateToken();
-        
-        window.addEventListener('storage', validateToken);
-
-        return () => {
-            window.removeEventListener('storage', validateToken);
-        };
-    }, []);
-    
     return (
         <nav className="bg-gray-800 p-2">
             <div className="container mx-auto flex justify-between items-center">
@@ -108,7 +85,7 @@ export default function Navbar() {
                 {isLoggedIn ? (
                     <>
                         <Avatar alt="User Avatar" className="cursor-pointer"  onClick={handleMenuClick}>
-                            {userInfo?.username ? userInfo.username.charAt(0).toUpperCase() : 'U'}
+                            {username ? username.charAt(0).toUpperCase() : 'U'}
                         </Avatar>
                         <Menu
                             anchorEl={anchorEl}

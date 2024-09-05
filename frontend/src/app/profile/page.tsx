@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { TextField, Button, Box, Typography, Container, Divider, Link } from '@mui/material';
 import UpdateUserInfo from '@/components/UpdateUserInfo';
 import UpdatePassword from '@/components/UpdatePassword';
+import DeleteAccount from '@/components/DeleteAccount';
 
 export default function ProfilePage() {
   const [password, setPassword] = useState('');
@@ -24,19 +25,9 @@ export default function ProfilePage() {
       <Typography variant="h4" component="h1" gutterBottom>
         Profile Settings
       </Typography>
-      
-      {/* Profile Information Section */}
       <UpdateUserInfo />
       <UpdatePassword />
-
-      {/* Security and Privacy Section */}
-      <Box sx={{ mt: 6 }}>
-        <Typography variant="h6">Security & Privacy</Typography>
-        <Divider sx={{ mb: 2 }} />
-        <Button variant="outlined" color="error" onClick={handleDeleteAccount}>
-          Delete Account
-        </Button>
-      </Box>
+      <DeleteAccount />
 
       {/* Support Section */}
       <Box sx={{ mt: 6 }}>
