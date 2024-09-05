@@ -1,11 +1,10 @@
 Todo
-- update practice hours once you submit the button
 - update activities count atomically
 - Design FE
   
-- logout functionality
-- delete account
 - verify email
-- manage behavior of dashboard when not logged in
-- About page to explain what it isc
+- About page to explain what it is
+- Dashboard height - prevent scroll on desktop if not necessary
+- scrollable side bar
+
 
