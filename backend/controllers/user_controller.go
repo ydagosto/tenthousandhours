@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func GetUserInfo(c *gin.Context) {
@@ -120,4 +121,40 @@ func UpdatePassword(c *gin.Context) {
 
 	// Return success message
 	c.JSON(http.StatusOK, gin.H{"message": "Password updated successfully"})
+}
+
+// DeleteUser deletes the user's account and all related data
+func DeleteUser(c *gin.Context) {
+	// Retrieve UserID from the context
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		return
+	}
+
+	// Start a transaction to delete the user and all related data
+	if err := models.DB.Transaction(func(tx *gorm.DB) error {
+		// Delete all practice logs associated with the user
+		if err := tx.Unscoped().Where("user_id = ?", userID).Delete(&models.PracticeLog{}).Error; err != nil {
+			return err
+		}
+
+		// Delete all activities associated with the user
+		if err := tx.Unscoped().Where("user_id = ?", userID).Delete(&models.Activity{}).Error; err != nil {
+			return err
+		}
+
+		// Finally, delete the user
+		if err := tx.Unscoped().Where("id = ?", userID).Delete(&models.User{}).Error; err != nil {
+			return err
+		}
+
+		return nil
+	}); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete user account"})
+		return
+	}
+
+	// Return success message
+	c.JSON(http.StatusOK, gin.H{"message": "User account and related data deleted successfully"})
 }

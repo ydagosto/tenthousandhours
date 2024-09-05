@@ -19,7 +19,7 @@ func CORSMiddleware() gin.HandlerFunc {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 		}
 
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 		// Handle preflight requests
@@ -54,6 +54,7 @@ func SetupRouter() *gin.Engine {
 		protected.GET("/get-user-info", controllers.GetUserInfo)
 		protected.POST("/update-user-info", controllers.UpdateUserInfo)
 		protected.POST("/update-user-password", controllers.UpdatePassword)
+		protected.DELETE("/delete-user-data", controllers.DeleteUser)
 		protected.POST("/create-activity", controllers.CreateActivity)
 		protected.GET("/get-activities", controllers.GetActivities)
 		protected.POST("/log-practice", controllers.LogPractice)
