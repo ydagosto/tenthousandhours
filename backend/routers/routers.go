@@ -53,6 +53,7 @@ func SetupRouter() *gin.Engine {
 	{
 		protected.GET("/get-user-info", controllers.GetUserInfo)
 		protected.POST("/update-user-info", controllers.UpdateUserInfo)
+		protected.POST("/update-user-password", controllers.UpdatePassword)
 		protected.POST("/create-activity", controllers.CreateActivity)
 		protected.GET("/get-activities", controllers.GetActivities)
 		protected.POST("/log-practice", controllers.LogPractice)

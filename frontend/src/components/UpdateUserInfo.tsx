@@ -57,6 +57,9 @@ export default function UpdateUserInfo() {
                 method: 'POST',
                 body: JSON.stringify({ username, email }),
             });
+
+            setSuccess("Profile updated successfully");
+            
         } catch (err) {
             setError('An unexpected error occurred');
         } finally {

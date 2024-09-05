@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { TextField, Button, Box, Typography, Container, Divider, Link } from '@mui/material';
 import UpdateUserInfo from '@/components/UpdateUserInfo';
+import UpdatePassword from '@/components/UpdatePassword';
 
 export default function ProfilePage() {
   const [password, setPassword] = useState('');
@@ -26,42 +27,7 @@ export default function ProfilePage() {
       
       {/* Profile Information Section */}
       <UpdateUserInfo />
-
-      {/* Account Security Section */}
-      <Box sx={{ mt: 6 }}>
-        <Typography variant="h6">Account Security</Typography>
-        <Divider sx={{ mb: 2 }} />
-        <TextField
-          fullWidth
-          label="Current Password"
-          type="password"
-          variant="outlined"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="New Password"
-          type="password"
-          variant="outlined"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="Confirm New Password"
-          type="password"
-          variant="outlined"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-        <Button variant="contained" color="secondary" onClick={handleChangePassword}>
-          Change Password
-        </Button>
-      </Box>
+      <UpdatePassword />
 
       {/* Security and Privacy Section */}
       <Box sx={{ mt: 6 }}>
