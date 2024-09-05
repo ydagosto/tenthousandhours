@@ -10,9 +10,11 @@ import Login from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { fetcher } from '@/utils/api';
 import { useRouter } from 'next/navigation'; 
+import { User } from '@/types/user';
 
 export default function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userInfo, setUserInfo] = useState< User | null>(null)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const router = useRouter();
 
@@ -72,12 +74,13 @@ export default function Navbar() {
     // Validate if the user is logged in based on token
     const validateToken = async () => {
         try {
-          await fetcher('/validate-token', {
-            method: 'GET',
-          });
-          setIsLoggedIn(true);
+            const data: User = await fetcher('/validate-token', {
+                method: 'GET',
+            });
+            setIsLoggedIn(true);
+            setUserInfo(data);
         } catch {
-          setIsLoggedIn(false);
+             setIsLoggedIn(false);
         }
       };
 
@@ -105,7 +108,7 @@ export default function Navbar() {
                 {isLoggedIn ? (
                     <>
                         <Avatar alt="User Avatar" className="cursor-pointer"  onClick={handleMenuClick}>
-                            U {/* You can add user's initial here if available */}
+                            {userInfo?.username ? userInfo.username.charAt(0).toUpperCase() : 'U'}
                         </Avatar>
                         <Menu
                             anchorEl={anchorEl}
@@ -115,7 +118,7 @@ export default function Navbar() {
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                            <MenuItem onClick={handleMenuClose}>
+                            <MenuItem onClick={() => handleMenuItemClick('/profile')}>
                                 <ListItemIcon>
                                     <Settings fontSize="small" />
                                 </ListItemIcon>

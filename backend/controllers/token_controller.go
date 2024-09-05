@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"backend/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,9 +18,18 @@ func ValidateToken(c *gin.Context) {
 		return
 	}
 
-	// If the token is valid, return a success message with the user ID.
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Token is valid",
-		"userID":  userID,
-	})
+	// Struct to hold only the username and email
+	var userInfo struct {
+		Username string `json:"username"`
+		Email    string `json:"email"`
+	}
+
+	// Query only for username and email fields
+	if err := models.DB.Table("users").Select("username, email").Where("id = ?", userID).First(&userInfo).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Return the username and email in the response
+	c.JSON(http.StatusOK, userInfo)
 }
