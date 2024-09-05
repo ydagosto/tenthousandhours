@@ -102,7 +102,6 @@ export default function UpdateUserInfo() {
                     variant="contained"
                     color="primary"
                     type="submit"
-                    fullWidth
                     disabled={loading}
                 >
                     {loading ? 'Saving...' : 'Save Profile'}
