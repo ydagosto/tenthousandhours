@@ -1,38 +1,14 @@
 // pages/profile.tsx
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TextField, Button, Box, Typography, Container, Divider, Link } from '@mui/material';
-import { User } from '@/types/user';
-import { fetcher } from '@/utils/api';
+import UpdateUserInfo from '@/components/UpdateUserInfo';
 
 export default function ProfilePage() {
-  const [username, setUsername] = useState<string | null>(null);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  useEffect(() => {
-    const getUserInfo = async () => {
-        try {
-            // Try to validate the token
-            const data = await fetcher('/protected/get-user-info', {
-                method: 'GET',
-            });
-            setUsername(data.username);
-            setUserEmail(data.email);
-        } catch (error) {
-            console.error("user not validated", error);
-        }
-    };
-
-    getUserInfo();
-}, []);
-
-  const handleSaveProfile = () => {
-    // Handle save profile logic
-  };
 
   const handleChangePassword = () => {
     // Handle change password logic
@@ -49,27 +25,7 @@ export default function ProfilePage() {
       </Typography>
       
       {/* Profile Information Section */}
-      <Box sx={{ mt: 4 }}>
-        <Typography variant="h6">Profile Information</Typography>
-        <Divider sx={{ mb: 2 }} />
-        <TextField
-          fullWidth
-          variant="outlined"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          variant="outlined"
-          value={userEmail}
-          onChange={(e) => setUserEmail(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-        <Button variant="contained" color="primary" onClick={handleSaveProfile}>
-          Save Profile
-        </Button>
-      </Box>
+      <UpdateUserInfo />
 
       {/* Account Security Section */}
       <Box sx={{ mt: 6 }}>
