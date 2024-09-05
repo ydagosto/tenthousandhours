@@ -42,7 +42,7 @@ export default function Dashboard() {
 
     // Fetch activities on component mount
     useEffect(() => {
-        if (!hasCheckedLoginStatus && isLoggedIn) {
+        if (hasCheckedLoginStatus && isLoggedIn) {
             const fetchActivities = async () => {
                 try {
                     const activitiesData = await fetcher('/protected/get-activities', {
