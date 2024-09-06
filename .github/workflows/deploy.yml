@@ -44,6 +44,14 @@ jobs:
         resource-group: ${{ secrets.RESOURCE_GROUP }}
         cluster-name: ${{ secrets.CLUSTER_NAME }}
 
+    - name: Deploy ConfigMap to AKS
+      run: |
+        kubectl apply -f k8s/configmap.yaml
+
+    - name: Deploy Secrets to AKS
+      run: |
+        kubectl apply -f k8s/secrets.yaml
+
     - name: Deploy frontend to AKS
       run: |
         kubectl apply -f k8s/frontend-deployment.yaml --validate=false
