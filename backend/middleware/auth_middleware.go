@@ -1,19 +1,26 @@
 package middleware
 
 import (
+	"net/http"
+	"os"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"net/http"
-	"strings"
 )
 
-var jwtSecret = []byte("your-secret-key")
-
 func getJWTSecret(token *jwt.Token) (interface{}, error) {
+	// Fetch the JWT secret from the environment at runtime
+	jwtSecret := os.Getenv("JWT_SECRET_KEY")
+	if jwtSecret == "" {
+		return nil, jwt.ErrInvalidKey
+	}
+
+	// Ensure the signing method is HMAC (the one we're using)
 	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 		return nil, jwt.ErrInvalidKey
 	}
-	return jwtSecret, nil
+	return []byte(jwtSecret), nil // Convert the secret to a byte slice
 }
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -49,7 +56,6 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 
 		c.Set("userID", uint(userID))
 

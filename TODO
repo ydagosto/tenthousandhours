@@ -2,9 +2,11 @@ Todo
 - update activities count atomically
 - Design FE
   
-- verify email
 - About page to explain what it is
 - Dashboard height - prevent scroll on desktop if not necessary
 - scrollable side bar
-
+- get https
+- Forgot Password
+- verify email
+- get a domain
 

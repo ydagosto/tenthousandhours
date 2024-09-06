@@ -7,9 +7,11 @@ import (
 // User represents a user in your application.
 type User struct {
 	gorm.Model
-	Username     string `gorm:"uniqueIndex"`
-	Email        string `gorm:"uniqueIndex"`
-	PasswordHash string
-	Activities   []Activity    `json:"activities" gorm:"foreignKey:UserID"` // One-to-Many relationship
-	PracticeLog  []PracticeLog `gorm:"foreignKey:UserID"`
+	Username       string          `gorm:"uniqueIndex;not null" json:"username"`
+	Email          string          `gorm:"uniqueIndex;not null" json:"email"`
+	PasswordHash   string          `gorm:"not null" json:"-"`
+	EmailVerified  bool            `gorm:"default:false" json:"email_verified"`
+	Activities     []Activity      `gorm:"foreignKey:UserID" json:"activities"`
+	PracticeLogs   []PracticeLog   `gorm:"foreignKey:UserID"`
+	PasswordResets []PasswordReset `gorm:"foreignKey:UserID"`
 }

@@ -91,6 +91,12 @@ export default function LoginPage() {
                             Create an account
                         </Link>
                     </Typography>
+                    <Typography variant="body1" sx={{ mt: 2 }}>
+                        Forgot your password?{' '}
+                        <Link href="/forgot-password" underline="hover" color="primary">
+                            Reset it here
+                        </Link>
+                    </Typography>
                 </Box>
             </Box>
         </Container>
