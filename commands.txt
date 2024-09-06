@@ -18,4 +18,4 @@ az acr login --name tenthousandhoursacr
 Delete pods based on label:
 kubectl delete pod -l app=frontend
 
-
+- create .env file for prod
