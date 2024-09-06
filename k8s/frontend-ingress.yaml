@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+    - host: tenthousandhours.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service  # Your frontend service name
+                port:
+                  number: 3000  # The port where your app is running
+  tls:
+    - hosts:
+        - tenthousandhours.net
+      secretName: tenthousandhours-net-tls
