@@ -52,20 +52,25 @@ jobs:
       run: |
         kubectl apply -f k8s/secret.yaml
 
-    - name: Deploy Cluster Issuer to AKS
-      run: |
-        kubectl apply -f k8s/cluster-issuer.yaml
-
-    - name: Deploy frontend ingress to AKS
-      run: |
-        kubectl apply -f k8s/frontend-ingress.yaml
-
     - name: Deploy frontend to AKS
       run: |
         kubectl apply -f k8s/frontend-deployment.yaml --validate=false
         kubectl delete pod -l app=frontend
 
+    - name: Deploy frontend service to AKS
+      run: |
+        kubectl apply -f k8s/frontend-service.yaml
+
+    - name: Deploy frontend ingress to AKS
+      run: |
+        kubectl apply -f k8s/frontend-ingress.yaml
+
     - name: Deploy backend to AKS
       run: |
         kubectl apply -f k8s/backend-deployment.yaml
+        kubectl delete pod -l app=backend
+
+    - name: Deploy backend service to AKS
+      run: |
+        kubectl apply -f k8s/backend-service.yaml
         kubectl delete pod -l app=backend
