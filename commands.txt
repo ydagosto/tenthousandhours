@@ -19,3 +19,15 @@ Delete pods based on label:
 kubectl delete pod -l app=frontend
 
 - create .env file for prod
+
+
+- minikube:
+- minikube start
+- minikube addons enable ingress
+- kubectl get pods -n ingress-nginx
+- eval $(minikube docker-env)
+- docker build -t tenthousandhoursacr.azurecr.io/frontend ./frontend 
+- kubectl apply -f k8s/frontend-deployment.yaml
+- kubectl apply -f k8s/frontend-service.yaml
+- kubectl apply -f k8s/frontend-ingress.yaml
+- minikube tunnel
