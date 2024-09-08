@@ -14,8 +14,17 @@ func CORSMiddleware() gin.HandlerFunc {
 
 		origin := c.Request.Header.Get("Origin")
 
-		// Allow only specific origins
-		if origin == "http://13.91.160.24:3000" || origin == "http://localhost:3000" {
+		// Define a set of allowed origins
+		allowedOrigins := map[string]bool{
+			"http://localhost:3000":            true,
+			"http://tenthousandhours.net":      true,
+			"https://tenthousandhours.net":     true,
+			"https://www.tenthousandhours.net": true,
+			"http://138.91.196.78:80":          true,
+		}
+
+		// Check if the request origin is in the allowed list
+		if allowedOrigins[origin] {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 		}
 
