@@ -16,7 +16,7 @@ import (
 
 // sendResetEmail sends a password reset email with a link to reset the password
 func SendResetEmail(toEmail, resetToken string) error {
-	from := mail.NewEmail("tenthousandhours", "no-reply@tenthousandhours.net") // Replace with your own
+	from := mail.NewEmail("tenthousandhours", "no-reply@tenthousandhours.net")
 	subject := "Password Reset Request"
 	to := mail.NewEmail("", toEmail)
 	resetLink := fmt.Sprintf("http://tenthousandhours.net/reset-password?token=%s", resetToken)
