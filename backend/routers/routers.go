@@ -48,30 +48,34 @@ func SetupRouter() *gin.Engine {
 
 	router.Use(CORSMiddleware())
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello, world!",
-		})
-	})
-
-	router.POST("/register", controllers.Register)
-	router.POST("/login", controllers.Login)
-	router.GET("/validate-token", middleware.AuthMiddleware(), controllers.ValidateToken)
-	router.POST("/send-password-reset", controllers.SendPasswordReset)
-	router.POST("/reset-password", controllers.ResetPassword)
-
-	// Protected routes
-	protected := router.Group("/protected")
-	protected.Use(middleware.AuthMiddleware())
+	// Create a new group for /api prefix
+	api := router.Group("/api")
 	{
-		protected.GET("/get-user-info", controllers.GetUserInfo)
-		protected.POST("/update-user-info", controllers.UpdateUserInfo)
-		protected.POST("/update-user-password", controllers.UpdatePassword)
-		protected.DELETE("/delete-user-data", controllers.DeleteUser)
-		protected.POST("/create-activity", controllers.CreateActivity)
-		protected.GET("/get-activities", controllers.GetActivities)
-		protected.POST("/log-practice", controllers.LogPractice)
-		protected.GET("/get-practice", controllers.GetPractice)
+		api.GET("/", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "Hello, world!",
+			})
+		})
+
+		api.POST("/register", controllers.Register)
+		api.POST("/login", controllers.Login)
+		api.GET("/validate-token", middleware.AuthMiddleware(), controllers.ValidateToken)
+		api.POST("/send-password-reset", controllers.SendPasswordReset)
+		api.POST("/reset-password", controllers.ResetPassword)
+
+		// Protected routes
+		protected := api.Group("/protected")
+		protected.Use(middleware.AuthMiddleware())
+		{
+			protected.GET("/get-user-info", controllers.GetUserInfo)
+			protected.POST("/update-user-info", controllers.UpdateUserInfo)
+			protected.POST("/update-user-password", controllers.UpdatePassword)
+			protected.DELETE("/delete-user-data", controllers.DeleteUser)
+			protected.POST("/create-activity", controllers.CreateActivity)
+			protected.GET("/get-activities", controllers.GetActivities)
+			protected.POST("/log-practice", controllers.LogPractice)
+			protected.GET("/get-practice", controllers.GetPractice)
+		}
 	}
 
 	return router
