@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, act } from 'react';
 import { Box, Card, Typography, useMediaQuery, useTheme, IconButton, Popover } from '@mui/material';
 import ActivityCard from './ActivityCard';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'; // Icon for "+" card
@@ -9,10 +9,11 @@ import { HorizontalRule } from '@mui/icons-material';
 
 interface ActivitySidebarProps {
     onActivitySelect: (activity: Activity) => void;
+    onActivityDelete: () => void;
     selectedActivity: Activity | null;
 }
 
-export default function ActivitySidebar({ onActivitySelect, selectedActivity }: ActivitySidebarProps) {
+export default function ActivitySidebar({ onActivitySelect, onActivityDelete, selectedActivity }: ActivitySidebarProps) {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -28,6 +29,9 @@ export default function ActivitySidebar({ onActivitySelect, selectedActivity }: 
                 method: 'GET',
             });
             setActivities(data);
+            if (selectedActivity == null && data.length > 0) {
+                onActivitySelect(data[0]);
+            }
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message || 'Failed to fetch activities');
@@ -39,14 +43,42 @@ export default function ActivitySidebar({ onActivitySelect, selectedActivity }: 
         }
     };
 
+    const deleteActivity = async (id: Number) => {
+        setError('');
+        setLoading(true);
+        try {
+            const data = await fetcher(`/protected/delete-activity/${id}`, {
+                method: 'DELETE',
+            });
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message || 'Failed to delete activity');
+            } else {
+                setError('An unexpected error occurred');
+            }
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
+    const handleActivityDeleted = async (activity: Activity) => {
+        await deleteActivity(activity.ID); // delete activity from Database
+        onActivityDelete();//Resfresh activities state from dashboard component
+        fetchActivities();//refresh activities state in sidebar
+        onActivitySelect(activity); // refresh selected activity state from dashboard to trigger log pull
+    }
+
     // Fetch activities when component mounts
     useEffect(() => {
         fetchActivities();
     }, []);
 
     // Handle when an activity is added
-    const handleActivityAdded = () => {
-        fetchActivities(); // Refresh activities list
+    const handleActivityAdded = async () => {
+        // fetch all the activites - close the popover - but also should set selectedActivity to the new Activity
+        await fetchActivities(); // Refresh activities list 
+
         setAnchorEl(null); // Close the popover after adding activity
     };
 
@@ -114,10 +146,9 @@ export default function ActivitySidebar({ onActivitySelect, selectedActivity }: 
                             key={activity.ID}
                             name={activity.name}
                             description={activity.description}
-                            unit={activity.unit}
-                            goal={activity.goal}
                             count={activity.count}
                             onClick={() => onActivitySelect(activity)}
+                            onDelete={() => handleActivityDeleted(activity)}
                             isSelected={selectedActivity?.ID === activity.ID} // Determine if this card is selected
                         />
                     </Box>

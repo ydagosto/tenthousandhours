@@ -2,6 +2,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/NavBar";
 import type { Metadata } from "next";
+import KoFiButton from "@/components/KoFiButton";
 
 export const metadata: Metadata = {
   title: "tenthousandhours",
@@ -21,6 +22,7 @@ export default function RootLayout({
           <main className="flex-1 flex flex-col overflow-auto">
             {children} 
           </main>
+          <KoFiButton />
         </body>
       </AuthProvider>
     </html>

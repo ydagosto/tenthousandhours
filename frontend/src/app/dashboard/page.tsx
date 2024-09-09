@@ -40,23 +40,25 @@ export default function Dashboard() {
         }
     }, [isLoggedIn, hasCheckedLoginStatus, router]);
 
+    const fetchActivities = async () => {
+        try {
+            const activitiesData = await fetcher('/protected/get-activities', {
+                method: 'GET'
+            });
+
+            if (activitiesData.length > 0) {
+                setSelectedActivity(activitiesData[0]);
+            } else {
+                setSelectedActivity(null)
+            }
+        } catch (error) {
+            console.error('Failed to fetch activities:', error);
+        }
+    };
+
     // Fetch activities on component mount
     useEffect(() => {
         if (hasCheckedLoginStatus && isLoggedIn) {
-            const fetchActivities = async () => {
-                try {
-                    const activitiesData = await fetcher('/protected/get-activities', {
-                        method: 'GET'
-                    });
-
-                    if (activitiesData.length > 0) {
-                        setSelectedActivity(activitiesData[0]);
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch activities:', error);
-                }
-            };
-        
             fetchActivities();
         }
     }, [isLoggedIn, hasCheckedLoginStatus]);
@@ -84,8 +86,12 @@ export default function Dashboard() {
         setSelectedActivity(activity);
     };
 
+    const handleActivityDelete = () => {
+        fetchActivities();
+    };
+
     return (
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex justify-center pb-20">
             <div
                 className="w-full max-w-7xl overflow-hidden"
                 style={{ padding: isMobile ? '0' : '0 16px' }}
@@ -96,6 +102,7 @@ export default function Dashboard() {
                 >
                     <ActivitySidebar
                         onActivitySelect={handleActivitySelect}
+                        onActivityDelete={handleActivityDelete}
                         selectedActivity={selectedActivity}
                     />
                     <main className="flex-1 p-2 overflow-hidden">
