@@ -21,7 +21,7 @@ export default function About() {
                             stay committed but also serves as a reminder of how far you&apos;ve come.
                         </Typography>
                         <Typography variant="body1" paragraph>
-                            The name <strong>Tenthousandhours</strong> comes from the idea that it takes around 10,000 hours of practice to master a skill.
+                            The name <strong>tenthousandhours</strong> comes from the idea that it takes around 10,000 hours of practice to master a skill.
                             Whether you&apos;re learning an instrument, developing coding skills, or working on any other craft, it&apos;s
                             a long-term journey. This app is meant to help you track your progress and remind you that every
                             hour adds up toward your goal.
@@ -35,7 +35,7 @@ export default function About() {
                         <Typography variant="body1" paragraph>
                             This project could have easily stayed as a spreadsheet, but I wanted something more user-friendly.
                             Pulling up Excel every time I practiced started to feel like a chore, and sometimes I&apos;d forget to
-                            log hours altogether. That&apos;s why I decided to build <strong>Tenthousandhours</strong>—a simple, clean app to make
+                            log hours altogether. That&apos;s why I decided to build <strong>tenthousandhours</strong>—a simple, clean app to make
                             tracking your practice hours easier.
                         </Typography>
                         <Typography variant="body1" paragraph>
@@ -52,7 +52,7 @@ export default function About() {
                             and ultimately feeling proud of the time you&apos;ve invested in becoming better.
                         </Typography>
                         <Typography variant="body1" paragraph>
-                            Thanks for using <strong>Tenthousandhours</strong>—let&apos;s keep growing, one hour at a time!
+                            Thanks for using <strong>tenthousandhours</strong>—let&apos;s keep growing, one hour at a time!
                         </Typography>
                     </div>
 
@@ -101,7 +101,7 @@ export default function About() {
                             <Box
                                 component="img"
                                 src="/screenshot.png"
-                                alt="Tenthousandhours screenshot"
+                                alt="tenthousandhours screenshot"
                                 sx={{
                                     width: '100%',
                                     height: '100%',
