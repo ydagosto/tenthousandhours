@@ -1,9 +1,10 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { fetcher } from '@/utils/api';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  
+  const router = useRouter();
   const [dashboardPage, setDashboardPage] = useState('/login');
 
   // Validate whether the user is logged in or not
@@ -14,6 +15,7 @@ export default function Home() {
                 method: 'GET'
             });
             setDashboardPage('/dashboard');
+            router.push('/dashboard');
         } catch (error) {
           setDashboardPage('/login');
         }

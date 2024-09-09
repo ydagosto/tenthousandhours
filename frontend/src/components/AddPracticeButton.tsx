@@ -28,6 +28,13 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
         setError('');
         setLoading(true);
 
+        const hours = parseFloat(count);
+        if (hours < 0 || hours > 24) {
+            setError("Hours must be between 0 and 24.");
+            setLoading(false);
+            return;
+        }
+
         if (activity) {
             try {
                 const response = await fetcher('/protected/log-practice', {
@@ -58,6 +65,20 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
             }
         }
     };
+
+    const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const hours = parseFloat(value);
+
+        if (hours < 0 || hours > 24) {
+            setError('Hours must be between 0 and 24.');
+        } else {
+            setError('');
+        }
+
+        setCount(value);
+    };
+
 
     return (
         <>
@@ -101,7 +122,7 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                     }}
                 >
                     <Typography variant="h6" component="h2" gutterBottom>
-                        Add Practice Hours
+                        Add <strong>{activity ? activity.name : ''}</strong> Practice Hours
                     </Typography>
                     <TextField
                         label="Date"
@@ -111,6 +132,10 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                         value={date.split('T')[0]} // Display date only
                         onChange={(e) => setDate(e.target.value + 'T00:00:00Z')}
                         InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                            max: new Date().toISOString().split('T')[0], // Disable future dates
+                        }}
+                        onKeyDown={(e) => e.preventDefault()}
                     />
                     <TextField
                         label="Hours"
@@ -118,7 +143,9 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                         fullWidth
                         margin="normal"
                         value={count}
-                        onChange={(e) => setCount(e.target.value)}
+                        onChange={handleHoursChange}
+                        error={!!error}
+                        helperText={error}
                     />
                     <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                         <Button onClick={handleClose} sx={{ mr: 1 }}>
