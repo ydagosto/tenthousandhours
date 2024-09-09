@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, MouseEvent } from 'react';
-import { Avatar, IconButton, Menu, MenuItem } from '@mui/material';
+import { Avatar, IconButton, Menu, MenuItem, Divider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Settings from '@mui/icons-material/Settings';
@@ -12,6 +12,7 @@ import { fetcher } from '@/utils/api';
 import { useRouter } from 'next/navigation'; 
 import { User } from '@/types/user';
 import { useAuth } from "@/context/AuthContext";
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function Navbar() {
     const { isLoggedIn, username, setIsLoggedIn } = useAuth();
@@ -72,6 +73,12 @@ export default function Navbar() {
         router.push('/login');
     };
 
+    // Handle logout
+    const handleAboutRoute = () => {
+        handleMenuClose();
+        router.push('/about')
+    };
+
     return (
         <nav className="bg-gray-800 p-2 sticky top-0 z-50">
             <div className="container mx-auto flex justify-between items-center">
@@ -107,6 +114,13 @@ export default function Navbar() {
                                 </ListItemIcon>
                                 Logout
                             </MenuItem>
+                            <Divider />
+                            <MenuItem onClick={handleAboutRoute}>
+                                <ListItemIcon>
+                                    <InfoIcon fontSize="small" />
+                                </ListItemIcon>
+                                About
+                            </MenuItem>
                         </Menu>
                     </>
                     ) : (
@@ -134,6 +148,13 @@ export default function Navbar() {
                                     <HowToRegIcon fontSize="small" />
                                 </ListItemIcon>
                                 Register
+                            </MenuItem>
+                            <Divider />
+                            <MenuItem onClick={handleAboutRoute}>
+                                <ListItemIcon>
+                                    <InfoIcon fontSize="small" />
+                                </ListItemIcon>
+                                About
                             </MenuItem>
                         </Menu>
                     </>
