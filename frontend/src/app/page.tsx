@@ -39,6 +39,9 @@ export default function Home() {
         <a href="/login" className="text-gray-700 underline">
           Login
         </a>
+        <a href="/about" className="text-gray-700 underline">
+          About
+        </a>
         <a href={dashboardPage} className="text-gray-700 underline">
           Dashboard
         </a>
