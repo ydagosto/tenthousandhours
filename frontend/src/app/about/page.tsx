@@ -16,13 +16,13 @@ export default function About() {
                     <div style={{textAlign:'justify'}}>
                         <Typography variant="body1" paragraph>
                             Welcome to <strong>tenthousandhours.net</strong>, a project I built to help track the hours you dedicate
-                            to practicing your craft. The learning journey can be long and challenging, and sometimes it's easy
-                            to forget how much time and effort you've put in. Having a record to look back on not only helps you
-                            stay committed but also serves as a reminder of how far you've come.
+                            to practicing your craft. The learning journey can be long and challenging, and sometimes it&apos;s easy
+                            to forget how much time and effort you&apos;ve put in. Having a record to look back on not only helps you
+                            stay committed but also serves as a reminder of how far you&apos;ve come.
                         </Typography>
                         <Typography variant="body1" paragraph>
                             The name <strong>Tenthousandhours</strong> comes from the idea that it takes around 10,000 hours of practice to master a skill.
-                            Whether you're learning an instrument, developing coding skills, or working on any other craft, it’s
+                            Whether you&apos;re learning an instrument, developing coding skills, or working on any other craft, it&apos;s
                             a long-term journey. This app is meant to help you track your progress and remind you that every
                             hour adds up toward your goal.
                         </Typography>
@@ -34,12 +34,12 @@ export default function About() {
                         </Typography>
                         <Typography variant="body1" paragraph>
                             This project could have easily stayed as a spreadsheet, but I wanted something more user-friendly.
-                            Pulling up Excel every time I practiced started to feel like a chore, and sometimes I’d forget to
-                            log hours altogether. That’s why I decided to build <strong>Tenthousandhours</strong>—a simple, clean app to make
+                            Pulling up Excel every time I practiced started to feel like a chore, and sometimes I&apos;d forget to
+                            log hours altogether. That&apos;s why I decided to build <strong>Tenthousandhours</strong>—a simple, clean app to make
                             tracking your practice hours easier.
                         </Typography>
                         <Typography variant="body1" paragraph>
-                            Here’s how it works:
+                            Here&apos;s how it works:
                             <ul>
                                 <li>Create an account.</li>
                                 <li>Add an activity (like learning guitar, coding, or anything else you want to get better at).</li>
@@ -47,12 +47,12 @@ export default function About() {
                             </ul>
                         </Typography>
                         <Typography variant="body1" paragraph>
-                            There’s no automated tracking here—this is all based on the honor system. If you add hours you haven’t
-                            actually practiced, you’re only cheating yourself. This app is about building a habit, seeing progress,
-                            and ultimately feeling proud of the time you've invested in becoming better.
+                            There&apos;s no automated tracking here—this is all based on the honor system. If you add hours you haven&apos;t
+                            actually practiced, you&apos;re only cheating yourself. This app is about building a habit, seeing progress,
+                            and ultimately feeling proud of the time you&apos;ve invested in becoming better.
                         </Typography>
                         <Typography variant="body1" paragraph>
-                            Thanks for using <strong>Tenthousandhours</strong>—let's keep growing, one hour at a time!
+                            Thanks for using <strong>Tenthousandhours</strong>—let&apos;s keep growing, one hour at a time!
                         </Typography>
                     </div>
 
