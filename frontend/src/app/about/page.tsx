@@ -9,7 +9,7 @@ export default function About() {
         <Container maxWidth="lg" className='pb-20'>
             <Box sx={{ mt: 4, mb: 4 }}>
                 
-                <Typography variant="h4" component="h1" textOverflow={'ellipsis'} gutterBottom>
+                <Typography variant="h5" component="h1" textOverflow={'ellipsis'} gutterBottom>
                     <strong>About tenthousandhours</strong>
                 </Typography>
                 

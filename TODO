@@ -1,8 +1,7 @@
 Todo
-- About page to explain what it is
-- Dashboard height - prevent scroll on desktop if not necessary
-- scrollable side bar
 - get https
+
+Won't Do
 - verify email
 
 Done
@@ -12,4 +11,7 @@ Done
 - disable future dates
 - activites name in Modal
 - update activities count atomically
+- scrollable side bar
+- About page to explain what it is
+- Dashboard height - prevent scroll on desktop if not necessary
 
