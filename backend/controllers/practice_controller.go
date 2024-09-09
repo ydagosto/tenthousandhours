@@ -8,6 +8,8 @@ import (
 )
 
 func LogPractice(c *gin.Context) {
+	// Start a database transaction
+	tx := models.DB.Begin()
 
 	var practiceLogs models.PracticeLog
 	if err := c.ShouldBindJSON(&practiceLogs); err != nil {
@@ -21,11 +23,37 @@ func LogPractice(c *gin.Context) {
 		return
 	}
 
+	// Set userID in practice log
 	practiceLogs.UserID = userID.(uint)
-	if err := models.DB.Create(&practiceLogs).Error; err != nil {
+
+	// Create the practice log in the transaction
+	if err := tx.Create(&practiceLogs).Error; err != nil {
+		tx.Rollback()
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	// Update the activity's count field based on the sum of all practice logs for this activity and user
+	var totalHours float64
+	if err := tx.Model(&models.PracticeLog{}).
+		Where("activity_id = ? AND user_id = ?", practiceLogs.ActivityID, userID).
+		Select("COALESCE(SUM(count), 0)").Scan(&totalHours).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Update the activity's count with the calculated total
+	if err := tx.Model(&models.Activity{}).
+		Where("id = ?", practiceLogs.ActivityID).
+		Update("count", totalHours).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Commit the transaction if all is good
+	tx.Commit()
 
 	c.JSON(http.StatusOK, practiceLogs)
 

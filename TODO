@@ -1,12 +1,15 @@
 Todo
-- update activities count atomically
-- Design FE
-  
 - About page to explain what it is
 - Dashboard height - prevent scroll on desktop if not necessary
 - scrollable side bar
 - get https
-- Forgot Password
 - verify email
+
+Done
+- Forgot Password Flow
 - get a domain
+- max 24 hours limit
+- disable future dates
+- activites name in Modal
+- update activities count atomically
 
