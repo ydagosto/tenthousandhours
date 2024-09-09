@@ -91,7 +91,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="flex-1 flex justify-center pb-20">
+        <div className={`flex-1 flex justify-center ${isMobile? 'pb-20': 'h-screen'}`}>
             <div
                 className="w-full max-w-7xl overflow-hidden"
                 style={{ padding: isMobile ? '0' : '0 16px' }}

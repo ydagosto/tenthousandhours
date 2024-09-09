@@ -118,7 +118,7 @@ export default function ActivityCard({
                     {description}
                 </Typography>
                 <Typography variant="body2">
-                    Count: {count}
+                    Total Hours: {count}
                 </Typography>
             </CardContent>
         </Card>

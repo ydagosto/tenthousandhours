@@ -101,10 +101,11 @@ export default function ActivitySidebar({ onActivitySelect, onActivityDelete, se
                 display: 'flex',
                 flexDirection: isMobile ? 'row' : 'column',
                 width: isMobile ? '100%' : '20vw',
-                height: isMobile ? 'auto' : '100vh',
+                height: isMobile ? 'auto' : '94vh',
                 overflowX: isMobile ? 'auto' : 'hidden',
                 overflowY: isMobile ? 'hidden' : 'auto',
                 padding: isMobile ? 1 : 2,
+                marginTop: isMobile ? '0px': '4px',
             }}
         >
             {!isMobile ? (

@@ -6,11 +6,13 @@ export default function About() {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const displayValue = isMobile ? 'absolute': 'flex'
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" className='pb-20'>
             <Box sx={{ mt: 4, mb: 4 }}>
-                <Typography variant="h3" component="h1" gutterBottom>
-                    About tenthousandhours
+                
+                <Typography variant="h4" component="h1" textOverflow={'ellipsis'} gutterBottom>
+                    <strong>About tenthousandhours</strong>
                 </Typography>
+                
                 <div style={{display:`${displayValue}`}}>
                     {/* Text Section */}
                     <div style={{textAlign:'justify'}}>
