@@ -2,27 +2,40 @@
 import { useState, useEffect } from 'react';
 import { fetcher } from '@/utils/api';
 import { useRouter } from 'next/navigation';
+import { CircularProgress, Box } from '@mui/material';
 
 export default function Home() {
   const router = useRouter();
   const [dashboardPage, setDashboardPage] = useState('/login');
+  const [loading, setLoading] = useState(true); // New loading state
 
   // Validate whether the user is logged in or not
   useEffect(() => {
     const validateToken = async () => {
-        try {
-            await fetcher('/validate-token', {
-                method: 'GET'
-            });
-            setDashboardPage('/dashboard');
-            router.push('/dashboard');
-        } catch (error) {
-          setDashboardPage('/login');
-        }
+      try {
+        await fetcher('/validate-token', {
+          method: 'GET'
+        });
+        setDashboardPage('/dashboard');
+        router.push('/dashboard');
+      } catch (error) {
+        setDashboardPage('/login');
+      } finally {
+        setLoading(false); // End loading regardless of success or failure
+      }
     };
 
     validateToken();
   }, []);
+
+  // Display loading while validating the token
+  if (loading) {
+    return (
+      <Box className="flex-1 flex flex-col items-center justify-center p-4" style={{ minHeight: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-4">
