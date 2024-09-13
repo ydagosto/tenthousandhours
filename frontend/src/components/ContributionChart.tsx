@@ -19,6 +19,7 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
         const today = new Date();
         const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
         const oneYearAgoDateStr = oneYearAgo.toISOString().split('T')[0]; // Convert one year ago to YYYY-MM-DD format
+        const todayDateStr = today.toISOString().split('T')[0]; // Convert today to YYYY-MM-DD format
 
         // 1. Group logs by date and sum the counts
         const logsByDate = practiceLogs.reduce((acc, log) => {
@@ -33,6 +34,11 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
         // 2. Check if there is an entry for one year ago, if not, add a log with count = 0
         if (!logsByDate[oneYearAgoDateStr]) {
             logsByDate[oneYearAgoDateStr] = 0;
+        }
+
+        // 3. Check if there is an entry for today, if not, add a log with count = 0
+        if (!logsByDate[todayDateStr]) {
+            logsByDate[todayDateStr] = 0;
         }
 
         // 3. Transform logsByDate back into an array of objects
