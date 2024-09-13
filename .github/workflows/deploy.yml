@@ -61,9 +61,9 @@ jobs:
       run: |
         kubectl apply -f k8s/frontend-service.yaml
 
-    - name: Deploy frontend ingress to AKS
+    - name: Deploy ingress to AKS
       run: |
-        kubectl apply -f k8s/frontend-ingress.yaml
+        kubectl apply -f k8s/ingress.yaml
 
     - name: Deploy backend to AKS
       run: |

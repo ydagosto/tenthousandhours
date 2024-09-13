@@ -7,6 +7,7 @@ test credentials:
 
 Build and push in amd64:
 docker buildx build --platform linux/amd64 -t tenthousandhoursacr.azurecr.io/frontend --push ./frontend
+docker buildx build --platform linux/amd64 -t tenthousandhoursacr.azurecr.io/backend --push ./backend
 
 Apply deployment changes to kube cluster
 kubectl apply -f k8s/frontend-deployment.yaml
