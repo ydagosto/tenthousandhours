@@ -1,5 +1,8 @@
 'use client';
-import { Box, Button, Typography, Container, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, Container, useMediaQuery, useTheme } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+
 
 export default function About() {
     const theme = useTheme();
@@ -42,11 +45,11 @@ export default function About() {
                         </Typography>
                         <Typography variant="body1" paragraph>
                             Here&apos;s how it works:
-                            <ul>
-                                <li>Create an account.</li>
-                                <li>Add an activity (like learning guitar, coding, or anything else you want to get better at).</li>
-                                <li>Log your hours each day by clicking the plus button and entering the time you practiced.</li>
-                            </ul>
+                            <List sx={{ listStyleType: 'disc', pl: 4 }}>
+                                <ListItem  sx={{ display: 'list-item' }}>Create an account.</ListItem>
+                                <ListItem  sx={{ display: 'list-item' }}>Add an activity (like learning guitar, coding, or anything else you want to get better at).</ListItem>
+                                <ListItem  sx={{ display: 'list-item' }}>Log your hours each day by clicking the plus button and entering the time you practiced.</ListItem>
+                            </List>
                         </Typography>
                         <Typography variant="body1" paragraph>
                             There&apos;s no automated tracking here—this is all based on the honor system. If you add hours you haven&apos;t
