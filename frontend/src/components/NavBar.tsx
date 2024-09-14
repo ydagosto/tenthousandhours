@@ -1,18 +1,17 @@
 "use client";
 
-import { useState, useEffect, MouseEvent } from 'react';
-import { Avatar, IconButton, Menu, MenuItem, Divider } from '@mui/material';
+import { useState, MouseEvent } from 'react';
+import { Avatar, IconButton, Menu, MenuItem, Divider, Link } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Login from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-import { fetcher } from '@/utils/api';
-import { useRouter } from 'next/navigation'; 
-import { User } from '@/types/user';
+import { useRouter } from 'next/navigation';
 import { useAuth } from "@/context/AuthContext";
 import InfoIcon from '@mui/icons-material/Info';
+import HomeButton from './HomeButton';
 
 export default function Navbar() {
     const { isLoggedIn, username, setIsLoggedIn } = useAuth();
@@ -83,10 +82,7 @@ export default function Navbar() {
         <nav className="bg-gray-800 p-2 sticky top-0 z-50">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Left side - Home link */}
-                <div className="text-white text-lg font-semibold">
-                    <a href="/">Home</a>
-                </div>
-
+                <HomeButton />
                 {/* Right side - Profile avatar */}
                 <div className="flex items-center space-x-4">
                 {isLoggedIn ? (
