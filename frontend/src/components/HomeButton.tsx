@@ -15,7 +15,7 @@ const HomeButton = () => {
         paddingBottom: 0
      }}
     >
-      <img src="logo-light/logo-192x192.png" alt="Home" width={32} height={32} />
+      <img src="logo-light/logo-192x192.png" alt="Home" width={40} height={40} />
     </IconButton>
   );
 };
