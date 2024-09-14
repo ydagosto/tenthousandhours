@@ -30,16 +30,22 @@ spec:
               key: SENDGRID_API_KEY
         - name: DATABASE_URL
           valueFrom:
-            configMapKeyRef:
-              name: app-config
+            secretKeyRef:
+              name: app-secrets
               key: DATABASE_URL
         - name: DB_HOST
           value: "db"
         - name: DB_PORT
           value: "5432"
         - name: DB_USER
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DATABASE_USER
         - name: DB_PASSWORD
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DATABASE_USER_PASSWORD
         - name: DB_NAME
           value: "tenthousandhours"
