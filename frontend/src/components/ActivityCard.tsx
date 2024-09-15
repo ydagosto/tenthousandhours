@@ -111,12 +111,12 @@ export default function ActivityCard({
                 >
                     {name}
                 </Typography>
-                <Typography 
+                {/* <Typography 
                     color="text.secondary" 
                     className="truncate text-gray-500"
                 >
                     {description}
-                </Typography>
+                </Typography> */}
                 <Typography variant="body2">
                     Total Hours: {count}
                 </Typography>

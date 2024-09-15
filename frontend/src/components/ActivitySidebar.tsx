@@ -159,20 +159,29 @@ export default function ActivitySidebar({ onActivitySelect, onActivityDelete, se
                 <Box
                     sx={{
                         display: 'inline-block',
-                        minWidth: '150px',
+                        minWidth: isMobile ? '150px' : '00px',
+                        // maxWidth: '150px',
                         cursor: 'pointer',
                         textAlign: 'center',
                         border: '2px dashed gray',
                         borderRadius: 1,
-                        padding: 2,
-                        mb: 2,
+                        padding: '4px',
+                        mb: 1,
+                        maxHeight: '90px',
                     }}
                     onClick={handleClick} // Open popover on click
                 >
                     <IconButton>
                         <AddCircleOutlineIcon fontSize="large" />
                     </IconButton>
-                    <Typography variant="body2">Add New Activity</Typography>
+                    <Typography 
+                        variant="body2" 
+                        noWrap 
+                        sx={{ 
+                            overflow: 'hidden', 
+                            textOverflow: 'ellipsis', 
+                            whiteSpace: 'nowrap' 
+                        }}>Add New Activity</Typography>
                 </Box>
 
                 {/* Popover for Adding Activity */}
