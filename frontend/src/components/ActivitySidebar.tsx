@@ -160,7 +160,6 @@ export default function ActivitySidebar({ onActivitySelect, onActivityDelete, se
                     sx={{
                         display: 'inline-block',
                         minWidth: isMobile ? '150px' : '00px',
-                        // maxWidth: '150px',
                         cursor: 'pointer',
                         textAlign: 'center',
                         border: '2px dashed gray',
