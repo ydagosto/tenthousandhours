@@ -175,7 +175,6 @@ export default function ActivitySidebar({ onActivitySelect, onActivityDelete, se
                 >
                     <IconButton>
                         <AddCircleOutlineIcon fontSize="large" />
-                        
                     </IconButton>
                     <Typography 
                         variant="body2" 
