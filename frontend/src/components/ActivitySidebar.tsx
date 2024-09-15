@@ -158,15 +158,18 @@ export default function ActivitySidebar({ onActivitySelect, onActivityDelete, se
                 {/* "+" Card */}
                 <Box
                     sx={{
-                        display: 'inline-block',
-                        minWidth: isMobile ? '150px' : '00px',
+                        display: 'inline-flex',
+                        flexDirection: 'column', // Arrange items vertically
+                        justifyContent: 'center', // Center items vertically
+                        alignItems: 'center', // Center items horizontally
+                        minWidth: isMobile ? '150px' : '00px', // Adjust width
                         cursor: 'pointer',
                         textAlign: 'center',
                         border: '2px dashed gray',
                         borderRadius: 1,
                         padding: '4px',
                         mb: 1,
-                        maxHeight: '90px',
+                        maxHeight: isMobile ? '142px' : '90px',
                     }}
                     onClick={handleClick} // Open popover on click
                 >
@@ -177,9 +180,11 @@ export default function ActivitySidebar({ onActivitySelect, onActivityDelete, se
                         variant="body2" 
                         noWrap 
                         sx={{ 
-                            overflow: 'hidden', 
+                            width: '100%', // Ensure the text takes full width of the Box
                             textOverflow: 'ellipsis', 
-                            whiteSpace: 'nowrap' 
+                            whiteSpace: 'nowrap', 
+                            overflow: 'hidden', // Ensure text is truncated
+                            textAlign: 'center', // Center the text within the box
                         }}>Add New Activity</Typography>
                 </Box>
 

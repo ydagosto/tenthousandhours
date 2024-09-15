@@ -11,6 +11,7 @@ import {
     DialogContentText, 
     DialogActions } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CountDisplay from './CountDisplay';
 
 interface ActivityCardProps {
     name: string;
@@ -111,15 +112,7 @@ export default function ActivityCard({
                 >
                     {name}
                 </Typography>
-                {/* <Typography 
-                    color="text.secondary" 
-                    className="truncate text-gray-500"
-                >
-                    {description}
-                </Typography> */}
-                <Typography variant="body2">
-                    Total Hours: {count}
-                </Typography>
+                <CountDisplay count={count} />
             </CardContent>
         </Card>
     );
