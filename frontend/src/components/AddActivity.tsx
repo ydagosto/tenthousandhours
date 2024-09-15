@@ -59,7 +59,6 @@ export default function AddActivity({ onActivityAdded }: AddActivityProps) {
                         variant="outlined"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        required
                     />
                 </Box>
                 {error && (
