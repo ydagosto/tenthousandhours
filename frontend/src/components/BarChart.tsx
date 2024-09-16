@@ -33,6 +33,9 @@ ChartJS.register(
 );
 
 const formatDataForChart = (logs: PracticeLog[]) => {
+    // Sort logs by date in ascending order
+    logs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
     const groupedLogs = logs.reduce((acc, log) => {
         const date = new Date(log.date).toISOString().split('T')[0];
         if (!acc[date]) acc[date] = 0;
