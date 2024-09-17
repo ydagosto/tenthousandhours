@@ -54,7 +54,7 @@ export default function ContributionChart({ practiceLogs }: ContributionChartPro
 
         // 4. Calculate total hours of practice in the last year
         const total = summedLogs.reduce((sum, log) => sum + log.count, 0);
-        setTotalHours(total);
+        setTotalHours(Math.round(total * 100) / 100);
 
         // 5. Calculate max streak and total active days
         let streak = 0;

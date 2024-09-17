@@ -7,7 +7,7 @@ export default function CountDisplay({ count }: { count: number }) {
     return (
         <Box sx={{ width: '100%', mt: 1 }}>
             <Typography variant="body2" color="textSecondary">
-                {`Total Hours: ${count}`} {/* Display the total count */}
+                {`Total Hours: ${Math.round(count * 100) / 100}`} {/* Display the total count */}
             </Typography>
 
             {/* Linear Progress Bar */}

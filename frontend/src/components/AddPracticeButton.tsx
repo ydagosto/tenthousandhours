@@ -14,7 +14,8 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
     const [error, setError] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<string>(new Date().toISOString().split('.')[0] + 'Z');
-    const [count, setCount] = useState<string>('');
+    const [hours, setHours] = useState<string>('');
+    const [minutes, setMinutes] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
 
     const theme = useTheme();
@@ -28,9 +29,13 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
         setError('');
         setLoading(true);
 
-        const hours = parseFloat(count);
-        if (hours < 0 || hours > 24) {
-            setError("Hours must be between 0 and 24.");
+        // Convert minutes to hours (e.g., 30 minutes => 0.5 hours)
+        const hoursValue = parseFloat(hours) || 0;
+        const minutesValue = parseFloat(minutes) || 0;
+        const totalHours = hoursValue + minutesValue / 60;
+
+        if (totalHours < 0 || totalHours > 24) {
+            setError("Total practice time must be between 0 and 24 hours.");
             setLoading(false);
             return;
         }
@@ -43,15 +48,17 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem("token")}`,
                     },
-                    body: JSON.stringify({ 
-                        activityId: activity.ID, 
-                        count: parseFloat(count as string), 
-                        date }),
+                    body: JSON.stringify({
+                        activityId: activity.ID,
+                        count: totalHours,
+                        date,
+                    }),
                 });
 
                 // Reset form
                 setDate(new Date().toISOString().split('.')[0] + 'Z');
-                setCount('');
+                setHours('');
+                setMinutes('');
                 handleClose();
                 onPracticeAdded();
             } catch (err) {
@@ -67,18 +74,12 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
     };
 
     const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const hours = parseFloat(value);
-
-        if (hours < 0 || hours > 24) {
-            setError('Hours must be between 0 and 24.');
-        } else {
-            setError('');
-        }
-
-        setCount(value);
+        setHours(e.target.value);
     };
 
+    const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMinutes(e.target.value);
+    };
 
     return (
         <>
@@ -122,7 +123,7 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                     }}
                 >
                     <Typography variant="h6" component="h2" gutterBottom>
-                        Add <strong>{activity ? activity.name : ''}</strong> Practice Hours
+                        Add <strong>{activity ? activity.name : ''}</strong> Practice Time
                     </Typography>
                     <TextField
                         label="Date"
@@ -142,8 +143,17 @@ export default function AddPracticeButton({ activity, onPracticeAdded }: AddPrac
                         type="number"
                         fullWidth
                         margin="normal"
-                        value={count}
+                        value={hours}
                         onChange={handleHoursChange}
+                        error={!!error}
+                    />
+                    <TextField
+                        label="Minutes"
+                        type="number"
+                        fullWidth
+                        margin="normal"
+                        value={minutes}
+                        onChange={handleMinutesChange}
                         error={!!error}
                         helperText={error}
                     />

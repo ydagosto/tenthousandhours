@@ -114,7 +114,9 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
             tooltip: {
                 callbacks: {
                     label: function (context) {
-                        return `${context.dataset.label}: ${context.raw} hours`;
+                        const rawValue = parseFloat(context.raw as string);
+                        const roundedValue = rawValue.toFixed(2);
+                        return `${context.dataset.label}: ${roundedValue} hours`;
                     },
                 },
             },
