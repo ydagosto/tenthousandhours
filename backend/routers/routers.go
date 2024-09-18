@@ -76,6 +76,7 @@ func SetupRouter() *gin.Engine {
 			protected.GET("/get-activities", controllers.GetActivities)
 			protected.POST("/log-practice", controllers.LogPractice)
 			protected.GET("/get-practice", controllers.GetPractice)
+			protected.DELETE("/delete-practice", controllers.DeletePractice)
 		}
 	}
 

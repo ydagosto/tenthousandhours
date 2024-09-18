@@ -84,3 +84,45 @@ func GetPractice(c *gin.Context) {
 
 	c.JSON(http.StatusOK, practiceLogs)
 }
+
+// DeletePractice deletes a list of practice logs
+func DeletePractice(c *gin.Context) {
+	// Start a database transaction
+	tx := models.DB.Begin()
+
+	// Extract list of log IDs from the request body
+	var request struct {
+		LogIDs []uint `json:"logIds"`
+	}
+
+	// Bind the incoming JSON to the struct
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Check if the user is authenticated
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		return
+	}
+
+	// Verify that log IDs are provided
+	if len(request.LogIDs) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No log IDs provided"})
+		return
+	}
+
+	// Delete the practice logs in the transaction for the authenticated user
+	if err := tx.Where("id IN (?) AND user_id = ?", request.LogIDs, userID).Delete(&models.PracticeLog{}).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete practice logs"})
+		return
+	}
+
+	// Commit the transaction if everything is successful
+	tx.Commit()
+
+	c.JSON(http.StatusOK, gin.H{"message": "Practice logs deleted successfully"})
+}

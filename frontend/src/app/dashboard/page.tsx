@@ -6,6 +6,7 @@ import ActivitySidebar from '@/components/ActivitySidebar';
 import { Activity } from '@/types/activity';
 import { PracticeLog } from '@/types/practiceLog';
 import AddPracticeButton from '@/components/AddPracticeButton';
+import ViewPracticeButton from '@/components/ViewPracticeButton';
 import { fetcher } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import BarChart from '@/components/BarChart';
@@ -90,6 +91,23 @@ export default function Dashboard() {
         fetchActivities();
     };
 
+    // Handle deletion of selected logs by calling the delete endpoint and then refetching practice logs
+    const handlePracticeLogsDelete = async (logIds: number[]) => {
+        try {
+            console.log(logIds);
+            // Call the delete endpoint with a list of selected log IDs
+            await fetcher('/protected/delete-practice', {
+                method: 'DELETE',
+                body: JSON.stringify({ logIds }),
+            });
+
+            // Refetch updated practice logs after deletion
+            fetchPracticeLogs();
+        } catch (error) {
+            console.error('Failed to delete practice logs:', error);
+        }
+    };
+
     return (
         <div className={`flex-1 flex justify-center ${isMobile? 'pb-20': 'h-screen'}`}>
             <div
@@ -109,6 +127,11 @@ export default function Dashboard() {
                         <AddPracticeButton 
                             activity={selectedActivity} 
                             onPracticeAdded={fetchPracticeLogs}
+                        />
+                        <ViewPracticeButton 
+                            activity={selectedActivity}
+                            practiceLogs={practiceLogs}
+                            onDelete={handlePracticeLogsDelete}
                         />
                         {selectedActivity && (
                             <Box sx={{ mt: 4 }}>

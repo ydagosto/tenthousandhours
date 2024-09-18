@@ -32,3 +32,8 @@ kubectl delete pod -l app=frontend
 - kubectl apply -f k8s/frontend-service.yaml
 - kubectl apply -f k8s/frontend-ingress.yaml
 - minikube tunnel
+
+
+// get into the db
+- kubectl port-forward svc/db 5432:5432
+- psql -h localhost -p 5432 -U tenthousandhours_svc -d tenthousandhours
