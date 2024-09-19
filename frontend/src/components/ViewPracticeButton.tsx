@@ -118,7 +118,7 @@ export default function ViewPracticeButton({ activity, practiceLogs, onDelete }:
           </Typography>
 
           <TableContainer sx={{ flexGrow: 1, overflowY: 'auto' }}>
-            <Table size="small">
+            <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
                   <TableCell  padding="checkbox" />
