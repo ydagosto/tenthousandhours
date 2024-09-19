@@ -118,10 +118,10 @@ export default function ViewPracticeButton({ activity, practiceLogs, onDelete }:
           </Typography>
 
           <TableContainer sx={{ flexGrow: 1, overflowY: 'auto' }}>
-            <Table>
+            <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>Select</TableCell>
+                  <TableCell  padding="checkbox" />
                   <TableCell>
                     <TableSortLabel
                       active={orderBy === 'date'}
