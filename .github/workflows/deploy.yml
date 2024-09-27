@@ -17,7 +17,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-        subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
