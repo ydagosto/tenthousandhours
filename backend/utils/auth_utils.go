@@ -19,7 +19,7 @@ func SendResetEmail(toEmail, resetToken string) error {
 	from := mail.NewEmail("tenthousandhours", "no-reply@tenthousandhours.net")
 	subject := "Password Reset Request"
 	to := mail.NewEmail("", toEmail)
-	resetLink := fmt.Sprintf("http://tenthousandhours.net/reset-password?token=%s", resetToken)
+	resetLink := fmt.Sprintf("https://tenthousandhours.net/reset-password?token=%s", resetToken)
 
 	// Construct the email content
 	plainTextContent := fmt.Sprintf("Please click the link below to reset your password:\n%s", resetLink)

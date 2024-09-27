@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: tenthousandhoursacr.azurecr.io/frontend:latest
+        image: 10khrsacr.azurecr.io/frontend:latest
         ports:
         - containerPort: 3000
         env:

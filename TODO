@@ -1,5 +1,7 @@
 Todo
 - Add practice validation to ensure we didn't already create 24 hours
+- Fix autodeployment
+- Fix reset password address
 
 Won't Do
 - verify email

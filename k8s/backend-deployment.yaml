@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: tenthousandhoursacr.azurecr.io/backend:latest
+        image: 10khrsacr.azurecr.io/backend:latest
         ports:
         - containerPort: 8080
         env:
