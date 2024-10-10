@@ -76,7 +76,17 @@ interface BarChartProps {
 }
 
 export default function BarChart({ practiceLogs }: BarChartProps) {
+
+    // Use the MUI theme to detect mobile view
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if screen is mobile
+
     const { dates, hours, cumulativeHours } = formatDataForChart(practiceLogs);
+
+    // Determine the interval for displaying points
+    const totalPoints = dates.length;
+    let pointInterval = isMobile ? Math.ceil(totalPoints / 20) : Math.ceil(totalPoints / 45); // Adjust this based on total points
+    if (pointInterval < 1) pointInterval = 1;
 
     // Define the chart data with mixed types
     const chartData: ChartData<'bar' | 'line', number[], string> = {
@@ -100,6 +110,7 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
                 borderWidth: 2,
                 fill: false,
                 yAxisID: 'y1',
+                pointRadius: cumulativeHours.map((_, index) => (index % pointInterval === 0 ? 3 : 0)), // Show points at intervals
             },
         ],
     };
@@ -155,10 +166,6 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
             },
         },
     };
-
-    // Use the MUI theme to detect mobile view
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if screen is mobile
 
     return (
         <div className="flex justify-center p-2">
