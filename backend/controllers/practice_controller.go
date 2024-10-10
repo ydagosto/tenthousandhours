@@ -26,6 +26,27 @@ func LogPractice(c *gin.Context) {
 	// Set userID in practice log
 	practiceLogs.UserID = userID.(uint)
 
+	// Validate that practice log for the same day doesn't exceed 24 hours
+	var totalHoursLogged float64
+	date := practiceLogs.Date.Format("2006-01-02") // Assuming practiceLogs.Date is a time.Time field
+
+	// Query to get total hours logged by the user for this activity on the same day
+	if err := tx.Model(&models.PracticeLog{}).
+		Where("activity_id = ? AND user_id = ? AND DATE(date) = ?", practiceLogs.ActivityID, userID, date).
+		Select("COALESCE(SUM(count), 0)").Scan(&totalHoursLogged).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching existing logged hours"})
+		return
+	}
+
+	// Calculate total hours with the new entry
+	newTotal := totalHoursLogged + practiceLogs.Count
+	if newTotal > 24 {
+		tx.Rollback()
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Total practice time for the day cannot exceed 24 hours"})
+		return
+	}
+
 	// Create the practice log in the transaction
 	if err := tx.Create(&practiceLogs).Error; err != nil {
 		tx.Rollback()
