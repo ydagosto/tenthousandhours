@@ -161,8 +161,8 @@ const ensureStartDateEntry = (logs: PracticeLog[], startDate: Date) => {
             DeletedAt: null,  // Assuming null for non-deleted records
             date: startDate.toISOString(),
             count: 0,
-            ActivityID: logs[0].ActivityID, // Use the provided activity ID
-            UserID: logs[0].UserID, // Use the provided user ID
+            ActivityID: 0, // Use the provided activity ID
+            UserID: 0, // Use the provided user ID
         });
     }
 
