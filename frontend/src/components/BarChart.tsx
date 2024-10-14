@@ -1,5 +1,5 @@
-import React from 'react';
-import { useTheme, useMediaQuery, Card, CardContent, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { useTheme, useMediaQuery, Card, CardContent, Typography, ButtonGroup, Button } from '@mui/material';
 import { Chart } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -31,6 +31,51 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+
+// Helper to subtract months from a date
+const subtractMonths = (date: Date, months: number) => {
+    const newDate = new Date(date);
+    newDate.setMonth(newDate.getMonth() - months);
+    return newDate;
+};
+
+// Helper to subtract weeks from a date
+const subtractWeeks = (date: Date, weeks: number) => {
+    const newDate = new Date(date.getTime()); // Create a copy of the original date
+    const daysToSubtract = weeks * 8; // Convert weeks to days
+    newDate.setDate(newDate.getDate() - daysToSubtract); // Subtract the days
+    console.log(newDate)
+    return newDate;
+};
+
+const filterLogsByRange = (logs: PracticeLog[], range: string) => {
+    const today = new Date();
+    let filteredLogs = logs;
+
+    switch (range) {
+        case '1W':
+            filteredLogs = logs.filter(log => new Date(log.date) >= subtractWeeks(today, 1));
+            break;
+        case '1M':
+            filteredLogs = logs.filter(log => new Date(log.date) >= subtractMonths(today, 1));
+            break;
+        case '3M':
+            filteredLogs = logs.filter(log => new Date(log.date) >= subtractMonths(today, 3));
+            break;
+        case '6M':
+            filteredLogs = logs.filter(log => new Date(log.date) >= subtractMonths(today, 6));
+            break;
+        case '1Y':
+            filteredLogs = logs.filter(log => new Date(log.date) >= subtractMonths(today, 12));
+            break;
+        case 'Max':
+        default:
+            filteredLogs = logs;
+            break;
+    }
+
+    return filteredLogs;
+};
 
 const formatDataForChart = (logs: PracticeLog[]) => {
     // Sort logs by date in ascending order
@@ -76,12 +121,17 @@ interface BarChartProps {
 }
 
 export default function BarChart({ practiceLogs }: BarChartProps) {
+    // State for selected range, default to "3M"
+    const [selectedRange, setSelectedRange] = useState('3M');
+
+    // Filter logs based on selected range
+    const filteredLogs = filterLogsByRange(practiceLogs, selectedRange);
 
     // Use the MUI theme to detect mobile view
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if screen is mobile
 
-    const { dates, hours, cumulativeHours } = formatDataForChart(practiceLogs);
+    const { dates, hours, cumulativeHours } = formatDataForChart(filteredLogs);
 
     // Determine the interval for displaying points
     const totalPoints = dates.length;
@@ -168,11 +218,24 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
     };
 
     return (
-        <div className="flex justify-center p-2">
+        <div className="flex flex-col justify-center p-2">
             <Card className="shadow-lg w-full max-w-4xl">
                 <Typography className="p-2" variant='h6' align="center">
                     Practice Hours and Cumulative Progress
                 </Typography>
+                <div className="flex justify-center mb-4">
+                    <ButtonGroup variant="text">
+                        {['Max', '1Y', '6M', '3M', '1M', '1W'].map((range) => (
+                            <Button
+                                key={range}
+                                onClick={() => setSelectedRange(range)}
+                                color={selectedRange === range ? 'primary' : 'secondary'}
+                            >
+                                {range}
+                            </Button>
+                        ))}
+                    </ButtonGroup>
+                </div>
                 <CardContent style={{ padding: 10 }}>
                     <div
                         className="w-full"
@@ -192,4 +255,4 @@ export default function BarChart({ practiceLogs }: BarChartProps) {
             </Card>
         </div>
     );
-};
+}
