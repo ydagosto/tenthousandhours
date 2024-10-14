@@ -116,6 +116,59 @@ const formatDataForChart = (logs: PracticeLog[]) => {
     return { dates, hours, cumulativeHours };
 };
 
+const getStartDate = (range: string, firstDate: Date) => {
+    const today = new Date();
+    let startDate;
+    switch (range) {
+        case '1W':
+            startDate = subtractWeeks(today, 1);
+            break;
+        case '1M':
+            startDate = subtractMonths(today, 1);
+            break;
+        case '3M':
+            startDate = subtractMonths(today, 3);
+            break;
+        case '6M':
+            startDate = subtractMonths(today, 6);
+            break;
+        case '1Y':
+            startDate = subtractMonths(today, 12);
+            break;
+        case 'Max':
+        default:
+            startDate = firstDate;
+            break;
+    }
+
+    return startDate < firstDate ? firstDate : startDate;
+};
+
+const getFirstLog  = (logs: PracticeLog[]) => {
+    return new Date(logs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0].date)
+}
+
+const ensureStartDateEntry = (logs: PracticeLog[], startDate: Date) => {
+    const startDateString = startDate.toISOString().split('T')[0];
+    const logForStartDate = logs.find(log => new Date(log.date).toISOString().split('T')[0] === startDateString);
+
+    // If no log exists for the startDate, add an entry with count 0 and other required fields
+    if (!logForStartDate) {
+        logs.unshift({
+            ID: 0,  // Assuming 0 for a new entry, adjust as needed
+            CreatedAt: new Date().toISOString(),
+            UpdatedAt: new Date().toISOString(),
+            DeletedAt: null,  // Assuming null for non-deleted records
+            date: startDate.toISOString(),
+            count: 0,
+            ActivityID: logs[0].ActivityID, // Use the provided activity ID
+            UserID: logs[0].UserID, // Use the provided user ID
+        });
+    }
+
+    return logs;
+};
+
 interface BarChartProps {
     practiceLogs: PracticeLog[];
 }
@@ -123,9 +176,13 @@ interface BarChartProps {
 export default function BarChart({ practiceLogs }: BarChartProps) {
     // State for selected range, default to "3M"
     const [selectedRange, setSelectedRange] = useState('3M');
+    const startDate = getStartDate(selectedRange, getFirstLog(practiceLogs));
 
     // Filter logs based on selected range
-    const filteredLogs = filterLogsByRange(practiceLogs, selectedRange);
+    const filteredLogs = ensureStartDateEntry(
+        filterLogsByRange(practiceLogs, selectedRange), 
+        startDate
+    );
 
     // Use the MUI theme to detect mobile view
     const theme = useTheme();
