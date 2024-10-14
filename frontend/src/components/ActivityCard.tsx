@@ -62,9 +62,11 @@ export default function ActivityCard({
                 transform: isPressed || isSelected ? 'scale(0.95)' : 'scale(1)', // Shrink when pressed or selected
                 boxShadow: isPressed || isSelected ? '0 2px 6px rgba(0, 0, 0, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.1)', // Change box shadow on press or when selected
                 backgroundColor: isPressed || isSelected ? '#f0f0f0' : 'white', // Change background color when pressed or selected
-                '&:hover': {
-                    transform: 'scale(1.05)', // Slightly scale up on hover
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Add shadow on hover
+                '@media (hover: hover)': { // Apply hover effect only on devices that support hover
+                    '&:hover': {
+                        transform: 'scale(1.05)', // Slightly scale up on hover
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Add shadow on hover
+                    },
                 },
             }}
         >
