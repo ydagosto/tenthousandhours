@@ -113,7 +113,8 @@ func DeletePractice(c *gin.Context) {
 
 	// Extract list of log IDs from the request body
 	var request struct {
-		LogIDs []uint `json:"logIds"`
+		LogIDs     []uint `json:"logIds"`
+		ActivityID uint   `json:"activityId"`
 	}
 
 	// Bind the incoming JSON to the struct
@@ -136,14 +137,34 @@ func DeletePractice(c *gin.Context) {
 	}
 
 	// Delete the practice logs in the transaction for the authenticated user
-	if err := tx.Where("id IN (?) AND user_id = ?", request.LogIDs, userID).Delete(&models.PracticeLog{}).Error; err != nil {
+	if err := tx.Where("id IN (?) AND user_id = ? AND activity_id = ?", request.LogIDs, userID, request.ActivityID).
+		Delete(&models.PracticeLog{}).Error; err != nil {
 		tx.Rollback()
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete practice logs"})
+		return
+	}
+
+	// Recalculate the total hours logged for this activity by the user
+	var totalHours float64
+	if err := tx.Model(&models.PracticeLog{}).
+		Where("activity_id = ? AND user_id = ?", request.ActivityID, userID).
+		Select("COALESCE(SUM(count), 0)").Scan(&totalHours).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error recalculating total hours"})
+		return
+	}
+
+	// Update the activity's count based on the recalculated total
+	if err := tx.Model(&models.Activity{}).
+		Where("id = ?", request.ActivityID).
+		Update("count", totalHours).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating activity count"})
 		return
 	}
 
 	// Commit the transaction if everything is successful
 	tx.Commit()
 
-	c.JSON(http.StatusOK, gin.H{"message": "Practice logs deleted successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Practice logs deleted and activity updated successfully"})
 }

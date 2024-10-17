@@ -94,15 +94,19 @@ export default function Dashboard() {
     // Handle deletion of selected logs by calling the delete endpoint and then refetching practice logs
     const handlePracticeLogsDelete = async (logIds: number[]) => {
         try {
-            console.log(logIds);
-            // Call the delete endpoint with a list of selected log IDs
-            await fetcher('/protected/delete-practice', {
-                method: 'DELETE',
-                body: JSON.stringify({ logIds }),
-            });
+            if (selectedActivity) {
+                // Call the delete endpoint with a list of selected log IDs
+                await fetcher('/protected/delete-practice', {
+                    method: 'DELETE',
+                    body: JSON.stringify({ 
+                        logIds,
+                        activityId: selectedActivity.ID
+                    }),
+                });
 
-            // Refetch updated practice logs after deletion
-            fetchPracticeLogs();
+                // Refetch updated practice logs after deletion
+                fetchPracticeLogs();
+            }
         } catch (error) {
             console.error('Failed to delete practice logs:', error);
         }
