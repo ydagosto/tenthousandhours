@@ -2,7 +2,7 @@
 
 ## Overview
 
-TenThousandHours is a web application designed to help users track their progress toward mastering various skills. The app is inspired by the “10,000-hour rule,” which suggests that it takes approximately 10,000 hours of practice to achieve mastery in any field. Users can log their practice hours for different activities, monitor their progress, and visualize their journey toward mastery.
+TenThousandHours is a web application designed to help users track their progress toward mastering various skills. The app is inspired by the “10,000-hour rule,” which suggests that it takes approximately 10,000 hours of practice to achieve mastery in any field. Users can log their practice hours for different activities, monitor their progress, and visualize their journey toward mastery. 
 
 This project is a portfolio piece, showcasing full-stack development skills using modern web technologies.
 
